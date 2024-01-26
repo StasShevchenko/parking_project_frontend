@@ -1,3 +1,6 @@
+@import url("src/theme/colors.css");
+@import url("src/theme/dimensions.css");
+
 *{
   margin: 0;
   padding: 0;
