@@ -1,3 +1,22 @@
+@import url("./theme/colors.css");
+@import url("./theme/dimensions.css");
+
+@font-face {
+  font-family: "Golos text";
+  src: url("./assets/fonts/GolosText-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Golos text";
+  src: url("./assets/fonts/GolosText-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+:root{
+  font-family: "Golos text", sans-serif;
+}
+
 *{
   margin: 0;
   padding: 0;
