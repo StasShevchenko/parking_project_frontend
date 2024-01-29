@@ -4,12 +4,12 @@ import './index.css'
 import {ThemeProvider} from "@mui/material";
 import {componentsTheme} from "./theme/componentsTheme.ts";
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router-dom";
-import AuthPage from "./pages/auth_page/AuthPage.tsx";
+import LoginPage from "./pages/login_page/LoginPage.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
-            <Route path="/" element={<AuthPage/>}/>
+            <Route path="/" element={<LoginPage/>}/>
             <Route path="*" element={<Navigate to="/"/>} />
         </Route>
     )

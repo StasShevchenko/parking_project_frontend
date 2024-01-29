@@ -11,48 +11,63 @@ export const componentsTheme = createTheme({
                 root: {
                     borderRadius: "var(--form-item-border-radius)",
                     background: "var(--primary-blue)",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    textTransform: "none"
                 },
             }
         },
         MuiTextField: {
             defaultProps: {
-                size: "small"
+                size: "small",
             },
         },
         MuiInputLabel: {
+            defaultProps:{
+            },
             styleOverrides:{
                 root: {
                     color: "var(--secondary-blue)",
                     [`&.Mui-focused`]:{
-                        color: "var(--secondary-blue)"
+                        color: "var(--secondary-blue)",
                     },
                 },
             }
         },
         MuiOutlinedInput: {
             defaultProps: {
-                size: "small"
+                size: "small",
+
             },
             styleOverrides: {
                 input: {
                     color: "var(--primary-blue)"
                 },
                 notchedOutline: {
-                    borderColor: "var(--primary-blue)",
+                    borderColor: "var(--secondary-blue)",
                     color: "var(--primary-blue)",
+                    borderWidth: "2px"
                 },
                 root: {
+                    [`& input::-ms-reveal`]: {display: "none"},
+                    [`& input::-ms-clear`]: {display: "none"},
                     borderRadius: "var(--form-item-border-radius)",
                     [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
-                        borderColor: 'var(--primary-blue)',
+                        borderColor: 'var(--secondary-blue)',
                     },
                     [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
-                        borderColor: 'var(--primary-blue)',
+                        borderColor: 'var(--secondary-blue)',
                     },
                     [`&.Mui-error .${outlinedInputClasses.notchedOutline}`]: {
                         borderColor: 'var(--primary-accent-red)',
-                        color: "green"
+                    },
+                    [`& .MuiInputAdornment-root`]:{
+                        color: `var(--primary-blue)`
+                    },
+                    [`& .MuiSvgIcon-root`]:{
+                        color: `var(--primary-blue)`
+                    },
+                    [`& .Mui-error .MuiSvgIcon-root`]:{
+                        color: `var(--primary-accent-red)`
                     },
                 },
             }
