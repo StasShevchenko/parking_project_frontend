@@ -1,0 +1,68 @@
+.loginPageWrapper{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: var(--background);
+}
+
+.imageWrapper{
+    flex: 2;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formWrapper{
+    flex: 2;
+    background: var(--primary-white);
+    height: 100%;
+    width: 100%;
+    padding: 32px;
+    border-radius: var(--form-item-border-radius) var(--form-item-border-radius) 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm{
+    width: 100%;
+    max-width: 350px;
+    display: flex;
+    gap: 20px;
+    justify-content: stretch;
+    flex-direction: column;
+}
+
+.carImage{
+    height: 100%;
+    width: 100%;
+}
+
+.title{
+    font-size: 28px;
+    font-weight: normal;
+    text-align: center;
+    color: var(--secondary-blue);
+    margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+    .imageWrapper{
+        flex: 3;
+    }
+    .formWrapper{
+        border-radius: var(--form-item-border-radius) 0 0 var(--form-item-border-radius);
+    }
+    .carImage{
+        height: 90%;
+        width: 90%;
+    }
+}
+
+@media (max-width: 640px) {
+    .loginPageWrapper{
+        flex-direction: column;
+    }
+}
