@@ -7,7 +7,9 @@ export interface IconTextFieldProps {
     error?: boolean,
     helperText?: string,
     onChange?: (value: string) => void,
+    onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void,
     label?: string,
+    value?: string,
     type?: HTMLInputTypeAttribute
 }
 
@@ -18,7 +20,9 @@ const IconTextField = ({
                            helperText,
                            onChange,
                            label,
-                           type
+                           type,
+                           value,
+                           onKeyDown
                        }: IconTextFieldProps) => {
 
     const [shrink, setShrink] = useState(false);
@@ -30,6 +34,7 @@ const IconTextField = ({
                     transform: "translate(45px, 9px)"
                 }
             }}
+            value={value}
             onFocus={() => setShrink(true)}
             onBlur={(e) => {
                 !e.target.value && setShrink(false);
@@ -37,6 +42,7 @@ const IconTextField = ({
             helperText={helperText}
             onChange={(event) => onChange?.(event.target.value)}
             error={error}
+            onKeyDown={onKeyDown}
             label={label}
             type={type}
             InputProps={{

@@ -48,6 +48,12 @@
     margin-bottom: 20px;
 }
 
+.errorMessage{
+    color: var(--primary-accent-red);
+    text-align: right;
+}
+
+
 @media (min-width: 640px) {
     .imageWrapper{
         flex: 3;
