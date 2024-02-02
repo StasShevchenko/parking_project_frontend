@@ -5,15 +5,21 @@ import {ThemeProvider} from "@mui/material";
 import {componentsTheme} from "./theme/componentsTheme.ts";
 import {jwtDecode} from "jwt-decode";
 import {useState} from "react";
-import {AuthContext, AuthState} from "./context/auth.context.ts";
+import {AuthContext, AuthState, User} from "./context/auth.context.ts";
 import {AxiosContext} from "./context/axios.context.ts";
 import {AxiosClient} from "./data/axios.client.ts";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
+import HomePage from "./pages/home_page/HomePage.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
-            <Route path="/" element={<LoginPage/>}/>
-            <Route path="*" element={<Navigate to="/"/>} />
+            <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/" element={
+                <ProtectedRoute>
+                    <HomePage/>
+                </ProtectedRoute>}/>
+            <Route path="*" element={<Navigate to="/"/>}/>
         </Route>
     )
 )
@@ -21,11 +27,11 @@ const router = createBrowserRouter(
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: 2,
+            retry: 0,
             staleTime: 10000
         },
         mutations: {
-            retry: 2,
+            retry: 0,
             retryDelay: 2000
         }
     }
@@ -36,7 +42,7 @@ const App = () => {
     const jwtString = window.localStorage.getItem('refreshToken')
     let jwt
     if (jwtString) {
-        jwt = jwtDecode((jwtString))
+        jwt = jwtDecode<User>((jwtString))
     }
     const [authState, setAuthState] = useState<AuthState>({
         isAuthenticated: jwt != null ? "true" : "false",

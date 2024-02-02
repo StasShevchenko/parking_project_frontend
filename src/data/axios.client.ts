@@ -1,11 +1,8 @@
 import axios from "axios";
 import {AuthContextType} from "../context/auth.context.ts";
 import {jwtDecode} from "jwt-decode";
+import {RefreshDto} from "./dto/refresh.dto.ts";
 
-export interface RefreshDto {
-    jwtAccess: string,
-    jwtRefresh: string
-}
 
 export class AxiosClient {
     private static instance?: AxiosClient
