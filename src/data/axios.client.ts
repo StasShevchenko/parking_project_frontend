@@ -1,7 +1,7 @@
 import axios from "axios";
 import {AuthContextType} from "../context/auth.context.ts";
 import {jwtDecode} from "jwt-decode";
-import {RefreshDto} from "./dto/refresh.dto.ts";
+import {TokensDto} from "./dto/tokens.dto.ts";
 
 
 export class AxiosClient {
@@ -39,17 +39,17 @@ export class AxiosClient {
                             })
                             return Promise.reject(error)
                         }
-                        return this.client.post<RefreshDto>('/auth/refresh',
+                        return this.client.post<TokensDto>('/auth/refresh',
                             {
                                 refresh: currentRefreshToken
                             })
                             .then(({data}) => {
-                                window.localStorage.setItem('refreshToken', data.jwtRefresh)
-                                this.client.defaults.headers['Authorization'] = `Bearer ${data.jwtAccess}`
-                                this.accessToken = data.jwtAccess
-                                originalRequest.headers['Authorization'] = `Bearer ${data.jwtAccess}`
-                                this.accessToken = data.jwtAccess
-                                originalRequest.headers['Authorization'] = `Bearer ${data.jwtAccess}`
+                                window.localStorage.setItem('refreshToken', data.refreshToken)
+                                this.client.defaults.headers['Authorization'] = `Bearer ${data.accessToken}`
+                                this.accessToken = data.accessToken
+                                originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
+                                this.accessToken = data.accessToken
+                                originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
                                 return this.client(originalRequest)
                             })
                     } else {
