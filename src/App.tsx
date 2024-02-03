@@ -10,15 +10,18 @@ import {AxiosContext} from "./context/axios.context.ts";
 import {AxiosClient} from "./data/axios.client.ts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import HomePage from "./pages/home_page/HomePage.tsx";
+import Root from "./pages/Root/Root.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
             <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/" element={
+            <Route element={
                 <ProtectedRoute>
-                    <HomePage/>
-                </ProtectedRoute>}/>
+                    <Root/>
+                </ProtectedRoute>}>
+                <Route path="/" element={<HomePage/> }/>
+            </Route>
             <Route path="*" element={<Navigate to="/"/>}/>
         </Route>
     )
