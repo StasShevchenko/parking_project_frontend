@@ -1,0 +1,66 @@
+.navMenuWrapper{
+    display: flex;
+}
+
+.navMenuItem{
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.iconPill{
+    width: 64px;
+    height: 32px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-blue);
+    position: relative;
+}
+
+.iconPillSurface{
+    width: 0;
+    height: 32px;
+    border-radius: 16px;
+    position: absolute;
+    background: var(--secondary-blue);
+    visibility: hidden;
+    z-index: 1;
+    transition: width ease 200ms;
+}
+
+.navMenuItem:hover .iconPill:not(.selectedItem){
+    background: rgba(211, 211, 211, 0.3);
+}
+
+.selectedItem.iconPill{
+    color: white;
+}
+
+.selectedItem .iconPillSurface{
+    visibility: visible;
+    width: 64px;
+}
+
+.iconWrapper{
+    z-index: 2;
+}
+
+@media (max-width: 640px) {
+    .navMenuWrapper{
+        height: 80px;
+        width: 100%;
+        gap: 8px;
+        box-shadow: lightgray 0 0 8px 1px;
+        padding: 0 8px;
+    }
+    .navMenuItem{
+        display: flex;
+        padding-top: 12px;
+        padding-bottom: 16px;
+        gap: 4px;
+        align-items: center;
+        flex-direction: column;
+        flex: 1;
+    }
+}
