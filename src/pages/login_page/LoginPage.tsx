@@ -13,6 +13,7 @@ import {LoginUserDto} from "../../data/dto/loginUser.dto.ts";
 import {jwtDecode} from "jwt-decode";
 import {Navigate, useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
+import {jwtPayloadToUser} from "../../utils/jwtPayloadToUser.ts";
 
 const LoginPage = () => {
 
@@ -64,7 +65,7 @@ const LoginPage = () => {
             setAuthState(
                 {
                     isAuthenticated: 'true',
-                    user: jwt
+                    user: jwtPayloadToUser(jwt)
                 }
             )
         },
@@ -103,7 +104,6 @@ const LoginPage = () => {
                             helperText={passwordError}
                             onChange={(value) => updatePassword(value)}
                             onKeyDown={(event) => {
-                                console.log(event.key)
                                 if (event.key === "Enter") {
                                     login()
                                 }
