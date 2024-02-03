@@ -3,12 +3,12 @@ import {createContext} from "react";
 export interface User{
     id: number
     email: string
-    is_staff: boolean
-    is_superuser: false
-    in_queue: false
+    isAdmin: boolean
+    isSuperAdmin: false
+    queueUser: false
     firstName: string
     secondName: string
-    changePassword: boolean
+    changedPassword: boolean
     avatar?: string
 }
 

@@ -1,9 +1,9 @@
 import {Api} from "./api.ts";
 import {RegisterUserDto} from "./dto/registerUser.dto.ts";
-import {RefreshDto} from "./dto/refresh.dto.ts";
+import {TokensDto} from "./dto/tokens.dto.ts";
 
 export class AuthApi extends Api{
-    async login(email: string, password: string): Promise<RefreshDto> {
+    async login(email: string, password: string): Promise<TokensDto> {
         const response = await this.axios.post('/auth/login', {'email': email, 'password': password})
         return response.data
     }
