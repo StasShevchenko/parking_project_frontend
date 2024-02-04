@@ -12,7 +12,7 @@ const NavMenu = ({children, labels, selectedIndex, onItemSelect}: NavMenuProps) 
     return (
         <div className={styles.navMenuWrapper}>
             {children?.map((child, index) =>
-                <div className={styles.navMenuItem} onClick={() => onItemSelect?.(index)}>
+                <div key={index} className={styles.navMenuItem} onClick={() => onItemSelect?.(index)}>
                     <div className={
                         styles.iconPill + " " +
                         (selectedIndex === index ? styles.selectedItem : '')}>

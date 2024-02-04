@@ -1,5 +1,5 @@
 import {InputAdornment, TextField} from "@mui/material";
-import {HTMLInputTypeAttribute, useState} from "react";
+import {HTMLInputTypeAttribute, useRef, useState} from "react";
 
 export interface IconTextFieldProps {
     startIcon?: React.ReactNode,
@@ -25,15 +25,19 @@ const IconTextField = ({
                            onKeyDown
                        }: IconTextFieldProps) => {
 
-    const [shrink, setShrink] = useState(false);
+    const [shrink, setShrink] = useState(!!value);
+
+    const inputRef = useRef<HTMLInputElement>(null)
+
 
     return (
         <TextField
             sx={{
                 '& .MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
                     transform: "translate(45px, 9px)"
-                }
+                },
             }}
+            inputRef={inputRef}
             value={value}
             onFocus={() => setShrink(true)}
             onBlur={(e) => {
@@ -46,6 +50,12 @@ const IconTextField = ({
             label={label}
             type={type}
             InputProps={{
+                onAnimationStart: () => {
+                    const autoFilled = inputRef.current?.matches(':-webkit-autofill')
+                    if (autoFilled) {
+                        setShrink(true)
+                    }
+                },
                 startAdornment: (<InputAdornment position="start">
                     {startIcon}
                 </InputAdornment>),
