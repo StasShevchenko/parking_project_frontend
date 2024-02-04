@@ -2,7 +2,7 @@ export interface UserInfoDto{
     email: string
     firstName: string
     secondName: string
-    id: string
+    id: number
     startDate: Date
     endDate: Date
     lastActiveDate: Date

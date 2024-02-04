@@ -3,7 +3,7 @@ import {UserInfoDto} from "./dto/userInfo.dto.ts";
 import {Role} from "../context/auth.context.ts";
 
 export class UserApi extends Api{
-    async getAllUsers(roles: Role[], fullName: string = ''): Promise<UserInfoDto[]> {
+    async getAllUsers({roles = [], fullName = ''}: {roles?: Role[], fullName?: string}): Promise<UserInfoDto[]> {
         const response = await this.axios.get<UserInfoDto[]>('/user',{
             params: {
                 fullName: fullName,
