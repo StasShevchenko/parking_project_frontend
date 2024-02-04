@@ -9,6 +9,7 @@
     height: 100%;
     width: 100%;
     padding: 32px;
+    background: var(--background);
 }
 
 @media (max-width: 640px) {
