@@ -6,6 +6,7 @@ import {UserApi} from "../../data/user.api.ts";
 import {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import UserItem from "./components/UserItem/UserItem.tsx";
+import PageStateWrapper from "../../components/PageStateWrapper/PageStateWrapper.tsx";
 
 const UsersListPage = () => {
 
@@ -18,20 +19,23 @@ const UsersListPage = () => {
     })
 
     return (
-        <div className={styles.pageWrapper}>
-            <div className={styles.optionsSection}>
-                <IconTextField
-                    startIcon={<SearchRounded/>}
-                    label="Поиск"
-                    onChange={(value) => setSearchValue(value)}
-                />
-            </div>
-            <div className={styles.itemsGrid}>
-                {users.data?.map(value =>
-                     (<UserItem user={value}/>)
-                )}
-            </div>
-        </div>
+            <PageStateWrapper
+                isLoading={users.isLoading}>
+                <div className={styles.pageWrapper}>
+                    <div className={styles.optionsSection}>
+                        <IconTextField
+                            startIcon={<SearchRounded/>}
+                            label="Поиск"
+                            onChange={(value) => setSearchValue(value)}
+                        />
+                    </div>
+                    <div className={styles.itemsGrid}>
+                        {users.data?.map(value =>
+                            (<UserItem user={value}/>)
+                        )}
+                    </div>
+                </div>
+            </PageStateWrapper>
     );
 };
 

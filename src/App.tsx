@@ -1,7 +1,7 @@
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router-dom";
 import LoginPage from "./pages/login_page/LoginPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ThemeProvider} from "@mui/material";
+import {StyledEngineProvider, ThemeProvider} from "@mui/material";
 import {componentsTheme} from "./theme/componentsTheme.ts";
 import {jwtDecode} from "jwt-decode";
 import {useState} from "react";
@@ -61,13 +61,15 @@ const App = () => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={componentsTheme}>
-                <AuthContext.Provider value={authContextValue}>
-                    <AxiosContext.Provider value={axiosInstance}>
-                        <RouterProvider router={router}/>
-                    </AxiosContext.Provider>
-                </AuthContext.Provider>
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={componentsTheme}>
+                    <AuthContext.Provider value={authContextValue}>
+                        <AxiosContext.Provider value={axiosInstance}>
+                            <RouterProvider router={router}/>
+                        </AxiosContext.Provider>
+                    </AuthContext.Provider>
+                </ThemeProvider>
+            </StyledEngineProvider>
         </QueryClientProvider>
     );
 };

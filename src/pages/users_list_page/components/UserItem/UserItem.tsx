@@ -5,12 +5,12 @@ import UserAvatar from "../../../../components/UserAvatar/UserAvatar.tsx";
 
 export interface UserItemProps {
     user: UserInfoDto
-    onClick: (userId: number) => void
+    onClick?: (userId: number) => void
 }
 
 const UserItem = ({user, onClick}: UserItemProps) => {
     return (
-        <CardActionArea onClick={() => onClick(user.id)} style={{borderRadius: "var(--card-radius)"}}>
+        <CardActionArea onClick={() => onClick?.(user.id)} style={{borderRadius: "var(--card-radius)"}}>
             <Card className={styles.card}>
                 <div className={styles.cardContent}>
                     <div className={styles.nameSection}>
