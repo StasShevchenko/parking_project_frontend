@@ -14,7 +14,7 @@ const UsersListPage = () => {
 
     const userApi = useApi(UserApi)
     const users = useQuery({
-        queryKey: [],
+        queryKey: [userApi.getAllUsersKey, searchValue],
         queryFn: () => userApi.getAllUsers({fullName: searchValue})
     })
 
@@ -26,12 +26,13 @@ const UsersListPage = () => {
                         <IconTextField
                             startIcon={<SearchRounded/>}
                             label="Поиск"
+                            value={searchValue}
                             onChange={(value) => setSearchValue(value)}
                         />
                     </div>
                     <div className={styles.itemsGrid}>
                         {users.data?.map(value =>
-                            (<UserItem user={value}/>)
+                            (<UserItem user={value} key={value.id}/>)
                         )}
                     </div>
                 </div>
