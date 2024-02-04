@@ -9,7 +9,7 @@ export class AxiosClient {
     private accessToken: string = ''
 
     private client = axios.create({
-        baseURL: 'http://localhost:3000',
+        baseURL: 'http://192.168.0.108:3000',
     })
 
     private constructor(authContext: AuthContextType) {

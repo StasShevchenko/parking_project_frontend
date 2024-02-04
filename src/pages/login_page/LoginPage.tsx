@@ -6,14 +6,13 @@ import IconTextField from "../../components/IconInput/IconTextField.tsx";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext, User} from "../../context/auth.context.ts";
 import {useApi} from "../../hooks/useApi.ts";
-import {AuthApi} from "../../data/auth.api.tsx";
+import {AuthApi} from "../../data/auth.api.ts";
 import {useMutation} from "@tanstack/react-query";
 import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
 import {LoginUserDto} from "../../data/dto/loginUser.dto.ts";
 import {jwtDecode} from "jwt-decode";
 import {Navigate, useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
-import {jwtPayloadToUser} from "../../utils/jwtPayloadToUser.ts";
 
 const LoginPage = () => {
 
@@ -61,11 +60,12 @@ const LoginPage = () => {
         },
         onSuccess: (data) => {
             window.localStorage.setItem('refreshToken', data.refreshToken)
-            const jwt = jwtDecode<User>(data.accessToken)
+            const jwt = jwtDecode<{user: User}>(data.accessToken)
+            const user: User = jwt.user
             setAuthState(
                 {
                     isAuthenticated: 'true',
-                    user: jwtPayloadToUser(jwt)
+                    user: user
                 }
             )
         },
