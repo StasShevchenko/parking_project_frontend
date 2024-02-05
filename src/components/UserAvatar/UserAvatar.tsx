@@ -8,7 +8,7 @@ const UserAvatar = ({avatarPath}: UserAvatarProps) => {
     return (
         <div className={styles.avatarWrapper}>
             {avatarPath ?
-                <img src={`https://back.parking-project.ru/static/${avatarPath}`}/> :
+                <img src={`http://localhost:3000/static/${avatarPath}`}/> :
                 <AccountCircleSharp className={styles.avatar}/>}
         </div>
     );
