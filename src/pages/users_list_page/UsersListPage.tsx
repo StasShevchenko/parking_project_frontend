@@ -3,7 +3,7 @@ import IconTextField from "../../components/IconInput/IconTextField.tsx";
 import {SearchRounded} from "@mui/icons-material";
 import {useApi} from "../../hooks/useApi.ts";
 import {UserApi} from "../../data/user.api.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import UserItem from "./components/UserItem/UserItem.tsx";
 import PageStateWrapper from "../../components/PageStateWrapper/PageStateWrapper.tsx";
@@ -18,16 +18,25 @@ const UsersListPage = () => {
         queryFn: () => userApi.getAllUsers({fullName: searchValue})
     })
 
+    const [isFirstLoad, setIsFirstLoad] = useState(true)
+    useEffect(() => {
+        if (users.data) {
+            setIsFirstLoad(false);
+        }
+    }, [users.data])
+
     return (
             <PageStateWrapper
-                isLoading={users.isLoading}>
+                isLoading={isFirstLoad}>
                 <div className={styles.pageWrapper}>
                     <div className={styles.optionsSection}>
                         <IconTextField
                             startIcon={<SearchRounded/>}
                             label="Поиск"
-                            value={searchValue}
-                            onChange={(value) => setSearchValue(value)}
+                            debounceTime={500}
+                            onChange={(value) => {
+                                setSearchValue(value)
+                            }}
                         />
                     </div>
                     <div className={styles.itemsGrid}>

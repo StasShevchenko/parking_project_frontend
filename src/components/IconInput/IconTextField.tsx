@@ -10,7 +10,10 @@ export interface IconTextFieldProps {
     onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void,
     label?: string,
     value?: string,
-    type?: HTMLInputTypeAttribute
+    type?: HTMLInputTypeAttribute,
+    //Don't provide value if you've
+    //provided debounceTime!
+    debounceTime?: number
 }
 
 const IconTextField = ({
@@ -22,13 +25,14 @@ const IconTextField = ({
                            label,
                            type,
                            value,
-                           onKeyDown
+                           onKeyDown,
+                           debounceTime = 0
                        }: IconTextFieldProps) => {
 
     const [shrink, setShrink] = useState(!!value);
 
     const inputRef = useRef<HTMLInputElement>(null)
-
+    const timeOutId = useRef<number | undefined>(undefined)
 
     return (
         <TextField
@@ -44,7 +48,14 @@ const IconTextField = ({
                 !e.target.value && setShrink(false);
             }}
             helperText={helperText}
-            onChange={(event) => onChange?.(event.target.value)}
+            onChange={(event) => {
+                if (debounceTime > 0) {
+                    clearInterval(timeOutId.current)
+                    timeOutId.current = setTimeout(() => onChange?.(event.target.value), debounceTime)
+                } else {
+                    onChange?.(event.target.value);
+                }
+            }}
             error={error}
             onKeyDown={onKeyDown}
             label={label}
