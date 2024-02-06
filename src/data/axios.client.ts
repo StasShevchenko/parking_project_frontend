@@ -29,6 +29,7 @@ export class AxiosClient {
                     originalRequest.retry = true
                     const currentRefreshToken = window.localStorage.getItem('refreshToken')
                     if (currentRefreshToken != null) {
+                        window.localStorage.removeItem('refreshToken')
                         const jwt = jwtDecode(currentRefreshToken)
                         const currentTime = new Date().getTime() / 1000
                         if (currentTime > jwt.exp!) {
