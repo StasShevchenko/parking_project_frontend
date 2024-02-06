@@ -1,6 +1,5 @@
 import axios from "axios";
 import {AuthContextType} from "../context/auth.context.ts";
-import {jwtDecode} from "jwt-decode";
 import {TokensDto} from "./dto/tokens.dto.ts";
 
 
@@ -30,16 +29,6 @@ export class AxiosClient {
                     const currentRefreshToken = window.localStorage.getItem('refreshToken')
                     if (currentRefreshToken != null) {
                         window.localStorage.removeItem('refreshToken')
-                        const jwt = jwtDecode(currentRefreshToken)
-                        const currentTime = new Date().getTime() / 1000
-                        if (currentTime > jwt.exp!) {
-                            window.localStorage.removeItem('refreshToken')
-                            authContext.setAuthState({
-                                ...authContext.authState,
-                                isAuthenticated: 'false'
-                            })
-                            return Promise.reject(error)
-                        }
                         let refreshData
                         try {
                             refreshData = await this.client.post<TokensDto>('/token/refresh',
