@@ -1,6 +1,6 @@
 import styles from './UsersListPage.module.css'
 import IconTextField from "../../components/IconInput/IconTextField.tsx";
-import {SearchRounded} from "@mui/icons-material";
+import {Add, SearchRounded} from "@mui/icons-material";
 import {useApi} from "../../hooks/useApi.ts";
 import {UserApi} from "../../data/user.api.ts";
 import {useEffect, useState} from "react";
@@ -10,12 +10,25 @@ import PageStateWrapper from "../../components/PageStateWrapper/PageStateWrapper
 import PageLoader from "../../components/PageLoader/PageLoader.tsx";
 import {Chip} from "@mui/material";
 import {Role} from "../../context/auth.context.ts";
+import Fab from "../../components/Fab/Fab.tsx";
 
 const UsersListPage = () => {
 
     const [searchValue, setSearchValue] = useState('')
     const [rolesArray, setRolesArray] = useState<Role[]>([])
-
+    const [scrollTop, setScrollTop] = useState(0)
+    const [showFab, setShowFab] = useState(true)
+    const handleGridScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const scrollTopValue = e.currentTarget.scrollTop
+        if (scrollTopValue < 100) {
+            setShowFab(true)
+        } else if (scrollTopValue < scrollTop) {
+            setShowFab(true)
+        } else{
+            setShowFab(false)
+        }
+        setScrollTop(scrollTopValue)
+    }
     const toggleRole = (role: Role) => {
         if (rolesArray.includes(role)) {
             setRolesArray(rolesArray.filter((roleItem) => roleItem !== role))
@@ -68,12 +81,17 @@ const UsersListPage = () => {
                 </div>
                 {users.isFetching ? <PageLoader/> :
                     !users.data?.length ? <div className="empty-message">Пользователи не найдены :(</div> :
-                    (<div className={styles.itemsGrid}>
+                    (<div className={styles.itemsGrid} onScroll={handleGridScroll}>
                         {users.data?.map(value =>
                             (<UserItem user={value} key={value.id}/>)
                         )}
                     </div>)
                 }
+                <Fab
+                    isVisible={showFab}
+                >
+                    <Add color="inherit"/>
+                </Fab>
             </div>
         </PageStateWrapper>
     );
