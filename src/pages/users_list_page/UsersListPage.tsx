@@ -11,6 +11,7 @@ import PageLoader from "../../components/PageLoader/PageLoader.tsx";
 import {Chip} from "@mui/material";
 import {Role} from "../../context/auth.context.ts";
 import Fab from "../../components/Fab/Fab.tsx";
+import AddUserMenu from "./components/AddUserMenu/AddUserMenu.tsx";
 
 const UsersListPage = () => {
 
@@ -18,6 +19,7 @@ const UsersListPage = () => {
     const [rolesArray, setRolesArray] = useState<Role[]>([])
     const [scrollTop, setScrollTop] = useState(0)
     const [showFab, setShowFab] = useState(true)
+    const [showAddUserDialog, setShowAddUserDialog] = useState(false)
     const handleGridScroll = (e: React.UIEvent<HTMLDivElement>) => {
         const scrollTopValue = e.currentTarget.scrollTop
         if (scrollTopValue < 100) {
@@ -89,9 +91,14 @@ const UsersListPage = () => {
                 }
                 <Fab
                     isVisible={showFab}
+                    onClick={() => setShowAddUserDialog(true)}
                 >
                     <Add color="inherit"/>
                 </Fab>
+                <AddUserMenu
+                    show={showAddUserDialog}
+                    onClose={() => setShowAddUserDialog(false)}
+                />
             </div>
         </PageStateWrapper>
     );
