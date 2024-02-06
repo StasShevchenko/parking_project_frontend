@@ -10,8 +10,15 @@
     width: 50vw;
     padding: 5px;
     max-width: 400px;
-    min-width: 300px;
+    min-width: 200px;
     align-items: stretch;
+}
+
+.content{
+    max-width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .label{
@@ -33,5 +40,25 @@
 
 .buttonsSection{
     display: flex;
+    align-items: stretch;
     gap: 10px;
+}
+
+@media (max-width: 760px) {
+    .buttonsSection{
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .form{
+        width: 70vw;
+    }
+}
+
+@media (max-width: 360px) {
+    form{
+        align-items: center;
+        padding: 0;
+    }
 }

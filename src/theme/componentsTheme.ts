@@ -9,6 +9,7 @@ export const componentsTheme = createTheme({
             },
             styleOverrides: {
                 root: {
+                    whiteSpace: "nowrap",
                     borderRadius: "var(--form-item-border-radius)",
                     background: "var(--primary-blue)",
                     fontWeight: "bold",

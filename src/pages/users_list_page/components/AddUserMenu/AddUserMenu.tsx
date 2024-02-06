@@ -1,5 +1,4 @@
 import {Button, Checkbox, Dialog, DialogContent, DialogTitle} from "@mui/material";
-import React from "react";
 import styles from './AddUserMenu.module.css'
 import IconTextField from "../../../../components/IconInput/IconTextField.tsx";
 import {Email, People} from "@mui/icons-material";
@@ -21,7 +20,7 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
                 } }}
             >
                 <DialogTitle className={styles.title}>Регистрация пользователя</DialogTitle>
-                <DialogContent>
+                <DialogContent className={styles.content}>
                     <div className={styles.form}>
                         <IconTextField label="Введите почту" startIcon={<Email/>}/>
                         <IconTextField label="Введите имя" startIcon={<People/>}/>
@@ -55,7 +54,7 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
                                 Закрыть
                             </Button>
                             <Button style={{flex: 1}}>
-                                Зарегистрировать пользователя
+                                Зарегистрировать
                             </Button>
                         </div>
                     </div>
