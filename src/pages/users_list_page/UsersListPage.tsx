@@ -12,8 +12,10 @@ import {Chip} from "@mui/material";
 import {Role} from "../../context/auth.context.ts";
 import Fab from "../../components/Fab/Fab.tsx";
 import AddUserMenu from "./components/AddUserMenu/AddUserMenu.tsx";
+import {useNavigate} from "react-router-dom";
 
 const UsersListPage = () => {
+    const navigate = useNavigate()
 
     const [searchValue, setSearchValue] = useState('')
     const [rolesArray, setRolesArray] = useState<Role[]>([])
@@ -86,7 +88,11 @@ const UsersListPage = () => {
                     !users.data?.length ? <div className="empty-message">Пользователи не найдены :(</div> :
                         (<div className={styles.itemsGrid} onScroll={handleGridScroll}>
                             {users.data?.map(value =>
-                                (<UserItem user={value} key={value.id}/>)
+                                (<UserItem
+                                    user={value}
+                                    key={value.id}
+                                    onClick={(userId) => navigate(`/users_list/${userId}`)}
+                                />)
                             )}
                         </div>)
                 }
