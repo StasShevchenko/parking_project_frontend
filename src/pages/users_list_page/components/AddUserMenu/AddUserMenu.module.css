@@ -21,6 +21,10 @@
     justify-content: center;
 }
 
+.errorMessage{
+    color: var(--primary-accent-red);
+}
+
 .label{
     color: var(--secondary-blue);
 }
