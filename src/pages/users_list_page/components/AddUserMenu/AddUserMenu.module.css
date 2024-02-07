@@ -44,8 +44,8 @@
 
 .buttonsSection{
     display: flex;
-    align-items: stretch;
     gap: 10px;
+    justify-content: flex-end;
 }
 
 @media (max-width: 760px) {

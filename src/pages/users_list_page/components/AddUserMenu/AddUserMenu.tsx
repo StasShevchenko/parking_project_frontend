@@ -1,10 +1,16 @@
-import {Button, Checkbox, Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {Alert, Button, Checkbox, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import styles from './AddUserMenu.module.css'
 import IconTextField from "../../../../components/IconInput/IconTextField.tsx";
 import {Email, People} from "@mui/icons-material";
 import {useState} from "react";
 import {Role} from "../../../../context/auth.context.ts";
 import {validateEmail} from "../../../../utils/validateEmail.ts";
+import {useApi} from "../../../../hooks/useApi.ts";
+import {AuthApi} from "../../../../data/auth.api.ts";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {RegisterUserDto} from "../../../../data/dto/registerUser.dto.ts";
+import LoadingButton from "../../../../components/LoadingButton/LoadingButton.tsx";
+import {UserApi} from "../../../../data/user.api.ts";
 
 export interface AddUserMenuProps {
     show: boolean,
@@ -16,6 +22,7 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
     const updateEmail = (value: string) => {
+        setIsUserRegistered(false)
         setEmailError('')
         setEmail(value)
     }
@@ -23,6 +30,7 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
     const [firstName, setFirstName] = useState('')
     const [firstNameError, setFirstNameError] = useState('')
     const updateFirstName = (value: string) => {
+        setIsUserRegistered(false)
         setFirstNameError('')
         setFirstName(value)
     }
@@ -30,6 +38,7 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
     const [secondName, setSecondName] = useState('')
     const [secondNameError, setSecondNameError] = useState('')
     const updateSecondName = (value: string) => {
+        setIsUserRegistered(false)
         setSecondNameError('')
         setSecondName(value)
     }
@@ -37,6 +46,7 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
     const [userRoles, setUserRoles] = useState<Role[]>(['user'])
     const [userRolesError, setUserRolesError] = useState('')
     const toggleRole = (role: Role) => {
+        setIsUserRegistered(false)
         setUserRolesError('')
         if (userRoles.includes(role)) {
             setUserRoles(userRoles.filter((value) => value !== role))
@@ -45,23 +55,73 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
         }
     }
 
-    const registerUser = () => {
+    const [isRegisterLoading, setIsRegisterLoading] = useState(false)
+    const [isRegisterError, setIsRegisterError] = useState(false)
+    const [isUserRegistered, setIsUserRegistered] = useState(false)
+
+    const queryClient = useQueryClient()
+    const authApi = useApi(AuthApi)
+    const registerMutation = useMutation({
+        mutationFn: ({user} : {user: RegisterUserDto}) => {
+            return authApi.register(user)
+        },
+        onSuccess: () => {
+          clearForm()
+            setIsRegisterLoading(false)
+            setIsUserRegistered(true)
+            queryClient.invalidateQueries({ queryKey: [UserApi.getAllUsersKey] })
+        },
+        onError: () => {
+            setIsRegisterLoading(false)
+            setIsRegisterError(true)
+        }
+    })
+
+    const clearForm = () => {
+        setEmail('')
+        setFirstName('')
+        setSecondName('')
+    }
+
+    const validateForm = (): boolean => {
+        let isError = false
+        setIsUserRegistered(false)
+        setIsRegisterError(false)
         if (!email) {
             setEmailError('Введите почту!')
+            isError = true
         } else if (!validateEmail(email)) {
             setEmailError('Неверный формат почты!')
+            isError = true
         }
         if (!firstName) {
             setFirstNameError('Введите имя!')
+            isError = true
         }
         if (!secondName) {
             setSecondNameError('Введите фамилию!')
+            isError = true
         }
         if (userRoles.length === 0) {
             setUserRolesError('У пользователя должна быть хотя бы одна роль!')
+            isError =true
         }
-        if (!emailError && !firstNameError && !secondNameError && !userRolesError) {
-            console.log('Ошибки нет!');
+        return isError
+    }
+    const registerUser = async () => {
+        const isError = validateForm()
+        if (!isError) {
+            setIsRegisterLoading(true)
+            clearForm()
+            registerMutation.mutate({
+                user: {
+                    email: email,
+                    firstName: firstName,
+                    secondName: secondName,
+                    isAdmin: userRoles.includes('admin'),
+                    queueUser: userRoles.includes('user')
+                }
+            })
         }
     }
 
@@ -136,10 +196,18 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
                             <Button onClick={() => onClose()}>
                                 Закрыть
                             </Button>
-                            <Button style={{flex: 1}} onClick={() => registerUser()}>
+                            <LoadingButton loading={isRegisterLoading} style={{flex: 1}} onClick={() => registerUser()}>
                                 Зарегистрировать
-                            </Button>
+                            </LoadingButton>
                         </div>
+                        {isUserRegistered && (<Alert onClose={() => {setIsUserRegistered(false)}} severity="success">
+                            Пользователь успешно зарегистрирован!
+                        </Alert>)}
+                        {isRegisterError && (
+                            <Alert onClose={() => {setIsRegisterError(false)}} severity="error">
+                                При регистрации произошла ошибка!
+                            </Alert>
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>

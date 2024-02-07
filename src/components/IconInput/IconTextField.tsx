@@ -1,5 +1,5 @@
 import {InputAdornment, TextField} from "@mui/material";
-import {HTMLInputTypeAttribute, useRef, useState} from "react";
+import {HTMLInputTypeAttribute, useEffect, useRef, useState} from "react";
 
 export interface IconTextFieldProps {
     startIcon?: React.ReactNode,
@@ -29,6 +29,11 @@ const IconTextField = ({
                            debounceTime = 0
                        }: IconTextFieldProps) => {
 
+    useEffect(() => {
+        if (value?.length === 0 && !(inputRef.current!.matches(':focus'))) {
+            setShrink(false)
+        }
+    }, [value]);
     const [shrink, setShrink] = useState(!!value);
 
     const inputRef = useRef<HTMLInputElement>(null)
@@ -50,8 +55,8 @@ const IconTextField = ({
             helperText={helperText}
             onChange={(event) => {
                 if (debounceTime > 0) {
-                    clearInterval(timeOutId.current)
-                    timeOutId.current = setTimeout(() => onChange?.(event.target.value), debounceTime)
+                    clearInterval(timeOutId.current);
+                    timeOutId.current = setTimeout(() => onChange?.(event.target.value), debounceTime);
                 } else {
                     onChange?.(event.target.value);
                 }

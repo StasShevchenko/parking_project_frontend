@@ -26,7 +26,7 @@ const UsersListPage = () => {
             setShowFab(true)
         } else if (scrollTopValue < scrollTop) {
             setShowFab(true)
-        } else{
+        } else {
             setShowFab(false)
         }
         setScrollTop(scrollTopValue)
@@ -41,7 +41,8 @@ const UsersListPage = () => {
 
     const userApi = useApi(UserApi)
     const users = useQuery({
-        queryKey: [userApi.getAllUsersKey, searchValue, rolesArray],
+        enabled: !showAddUserDialog,
+        queryKey: [UserApi.getAllUsersKey, searchValue, rolesArray],
         queryFn: () => userApi.getAllUsers({fullName: searchValue, roles: rolesArray})
     })
 
@@ -83,11 +84,11 @@ const UsersListPage = () => {
                 </div>
                 {users.isFetching ? <PageLoader/> :
                     !users.data?.length ? <div className="empty-message">Пользователи не найдены :(</div> :
-                    (<div className={styles.itemsGrid} onScroll={handleGridScroll}>
-                        {users.data?.map(value =>
-                            (<UserItem user={value} key={value.id}/>)
-                        )}
-                    </div>)
+                        (<div className={styles.itemsGrid} onScroll={handleGridScroll}>
+                            {users.data?.map(value =>
+                                (<UserItem user={value} key={value.id}/>)
+                            )}
+                        </div>)
                 }
                 <Fab
                     isVisible={showFab}
@@ -95,10 +96,10 @@ const UsersListPage = () => {
                 >
                     <Add color="inherit"/>
                 </Fab>
-                <AddUserMenu
+                {showAddUserDialog && <AddUserMenu
                     show={showAddUserDialog}
                     onClose={() => setShowAddUserDialog(false)}
-                />
+                />}
             </div>
         </PageStateWrapper>
     );
