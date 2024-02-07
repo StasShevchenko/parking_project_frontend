@@ -1,5 +1,5 @@
 import {InputAdornment, TextField} from "@mui/material";
-import {HTMLInputTypeAttribute, useState} from "react";
+import {HTMLInputTypeAttribute, useEffect, useRef, useState} from "react";
 
 export interface IconTextFieldProps {
     startIcon?: React.ReactNode,
@@ -10,7 +10,10 @@ export interface IconTextFieldProps {
     onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void,
     label?: string,
     value?: string,
-    type?: HTMLInputTypeAttribute
+    type?: HTMLInputTypeAttribute,
+    //Don't provide value if you've
+    //provided debounceTime!
+    debounceTime?: number
 }
 
 const IconTextField = ({
@@ -22,30 +25,53 @@ const IconTextField = ({
                            label,
                            type,
                            value,
-                           onKeyDown
+                           onKeyDown,
+                           debounceTime = 0
                        }: IconTextFieldProps) => {
 
-    const [shrink, setShrink] = useState(false);
+    useEffect(() => {
+        if (value?.length === 0 && !(inputRef.current!.matches(':focus'))) {
+            setShrink(false)
+        }
+    }, [value]);
+    const [shrink, setShrink] = useState(!!value);
+
+    const inputRef = useRef<HTMLInputElement>(null)
+    const timeOutId = useRef<number | undefined>(undefined)
 
     return (
         <TextField
             sx={{
                 '& .MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
                     transform: "translate(45px, 9px)"
-                }
+                },
             }}
+            inputRef={inputRef}
             value={value}
             onFocus={() => setShrink(true)}
             onBlur={(e) => {
                 !e.target.value && setShrink(false);
             }}
             helperText={helperText}
-            onChange={(event) => onChange?.(event.target.value)}
+            onChange={(event) => {
+                if (debounceTime > 0) {
+                    clearInterval(timeOutId.current);
+                    timeOutId.current = setTimeout(() => onChange?.(event.target.value), debounceTime);
+                } else {
+                    onChange?.(event.target.value);
+                }
+            }}
             error={error}
             onKeyDown={onKeyDown}
             label={label}
             type={type}
             InputProps={{
+                onAnimationStart: () => {
+                    const autoFilled = inputRef.current?.matches(':-webkit-autofill')
+                    if (autoFilled) {
+                        setShrink(true)
+                    }
+                },
                 startAdornment: (<InputAdornment position="start">
                     {startIcon}
                 </InputAdornment>),

@@ -1,0 +1,13 @@
+.avatarWrapper{
+    height: 64px;
+    width: 64px;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.avatar{
+    height: 100%;
+    width: 100%;
+    color: var(--primary-blue);
+}

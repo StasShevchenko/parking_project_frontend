@@ -1,6 +1,5 @@
 import axios from "axios";
 import {AuthContextType} from "../context/auth.context.ts";
-import {jwtDecode} from "jwt-decode";
 import {TokensDto} from "./dto/tokens.dto.ts";
 
 
@@ -9,7 +8,7 @@ export class AxiosClient {
     private accessToken: string = ''
 
     private client = axios.create({
-        baseURL: 'http://192.168.0.108:3000',
+        baseURL: 'http://localhost:3000',
     })
 
     private constructor(authContext: AuthContextType) {
@@ -23,15 +22,20 @@ export class AxiosClient {
             (value) => {
                 return value
             },
-            (error) => {
-                const originalRequest = error.const
+            async (error) => {
+                const originalRequest = error.config
                 if (error.response.status === 401 && !originalRequest.retry) {
                     originalRequest.retry = true
                     const currentRefreshToken = window.localStorage.getItem('refreshToken')
                     if (currentRefreshToken != null) {
-                        const jwt = jwtDecode(currentRefreshToken)
-                        const currentTime = new Date().getTime() / 1000
-                        if (currentTime > jwt.exp!) {
+                        window.localStorage.removeItem('refreshToken')
+                        let refreshData
+                        try {
+                            refreshData = await this.client.post<TokensDto>('/token/refresh',
+                                {
+                                    refresh: currentRefreshToken
+                                });
+                        } catch (error) {
                             window.localStorage.removeItem('refreshToken')
                             authContext.setAuthState({
                                 ...authContext.authState,
@@ -39,24 +43,17 @@ export class AxiosClient {
                             })
                             return Promise.reject(error)
                         }
-                        return this.client.post<TokensDto>('/auth/refresh',
-                            {
-                                refresh: currentRefreshToken
-                            })
-                            .then(({data}) => {
-                                window.localStorage.setItem('refreshToken', data.refreshToken)
-                                this.client.defaults.headers['Authorization'] = `Bearer ${data.accessToken}`
-                                this.accessToken = data.accessToken
-                                originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
-                                this.accessToken = data.accessToken
-                                originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
-                                return this.client(originalRequest)
-                            })
+                        const {data} = refreshData;
+                        window.localStorage.setItem('refreshToken', data.refreshToken)
+                        this.client.defaults.headers['Authorization'] = `Bearer ${data.accessToken}`
+                        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
+                        this.accessToken = data.accessToken
+                        return this.client(originalRequest)
                     } else {
                         return Promise.reject(error)
                     }
                 } else {
-                    return Promise.reject(error)
+                    return Promise.reject(error);
                 }
             }
         )

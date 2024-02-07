@@ -1,5 +1,6 @@
 @import url("./theme/colors.css");
 @import url("./theme/dimensions.css");
+@import url("utils.css");
 
 @font-face {
   font-family: "Golos text";

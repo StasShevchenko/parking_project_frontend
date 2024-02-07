@@ -12,6 +12,8 @@ export interface User{
     avatar?: string
 }
 
+export type Role = 'user' | 'admin' | 'super_admin'
+
 export interface AuthState{
     isAuthenticated: 'true' | 'false' | 'loading'
     user?: User

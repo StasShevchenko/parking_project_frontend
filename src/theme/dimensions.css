@@ -1,3 +1,4 @@
 :root{
-    --form-item-border-radius: 32px
+    --form-item-border-radius: 32px;
+    --card-radius: 24px;
 }

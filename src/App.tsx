@@ -1,7 +1,7 @@
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router-dom";
 import LoginPage from "./pages/login_page/LoginPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ThemeProvider} from "@mui/material";
+import {StyledEngineProvider, ThemeProvider} from "@mui/material";
 import {componentsTheme} from "./theme/componentsTheme.ts";
 import {jwtDecode} from "jwt-decode";
 import {useState} from "react";
@@ -11,6 +11,7 @@ import {AxiosClient} from "./data/axios.client.ts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import HomePage from "./pages/home_page/HomePage.tsx";
 import Root from "./pages/Root/Root.tsx";
+import UsersListPage from "./pages/users_list_page/UsersListPage.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,7 +21,8 @@ const router = createBrowserRouter(
                 <ProtectedRoute>
                     <Root/>
                 </ProtectedRoute>}>
-                <Route path="/" element={<HomePage/> }/>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/users_list" element={<UsersListPage/>}/>
             </Route>
             <Route path="*" element={<Navigate to="/"/>}/>
         </Route>
@@ -59,13 +61,15 @@ const App = () => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={componentsTheme}>
-                <AuthContext.Provider value={authContextValue}>
-                    <AxiosContext.Provider value={axiosInstance}>
-                        <RouterProvider router={router}/>
-                    </AxiosContext.Provider>
-                </AuthContext.Provider>
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={componentsTheme}>
+                    <AuthContext.Provider value={authContextValue}>
+                        <AxiosContext.Provider value={axiosInstance}>
+                            <RouterProvider router={router}/>
+                        </AxiosContext.Provider>
+                    </AuthContext.Provider>
+                </ThemeProvider>
+            </StyledEngineProvider>
         </QueryClientProvider>
     );
 };
