@@ -1,6 +1,6 @@
 import axios from "axios";
-import {AuthContextType} from "../context/auth.context.ts";
-import {TokensDto} from "./dto/tokens.dto.ts";
+import {AuthContextType} from "../../context/auth.context.ts";
+import {TokensDto} from "../dto/tokens.dto.ts";
 
 
 export class AxiosClient {
