@@ -10,6 +10,7 @@ import {getUserRolesString} from "../../data/dto/userInfo.dto.ts";
 import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
 import {IconButton} from "@mui/material";
 import {ArrowBackIos} from "@mui/icons-material";
+import {useUser} from "../../hooks/useUser.ts";
 
 const UserPage = () => {
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ const UserPage = () => {
         queryFn: () => userApi.getUserById({userId: parseInt(id!)}),
         queryKey: [UserApi.getUserByIdKey, id!]
     })
-
+    const editor = useUser()
     const roleMutation = useMutation({
         mutationFn: ({userId, isAdmin}: { userId: number, isAdmin: boolean }) => userApi.toggleAdminRole({
                 userId: userId,
@@ -28,7 +29,7 @@ const UserPage = () => {
             }
         ),
         onSuccess: () => {
-            client.invalidateQueries({queryKey: [UserApi.getUserByIdKey]})
+            client.invalidateQueries({queryKey: [UserApi.getUserByIdKey, UserApi.getAllUsersKey]})
         }
     })
 
@@ -59,9 +60,11 @@ const UserPage = () => {
                         {`Роли: ${getUserRolesString(user.data!)}`}
                     </div>
                     <div className={styles.buttonsSection}>
-                        <LoadingButton loading={false}>
-                            Удалить сотрудника
-                        </LoadingButton>
+                        {((!user.data?.isSuperAdmin && !user.data?.isAdmin) ||
+                            (editor.isSuperAdmin && !user.data?.isSuperAdmin)) &&
+                            <LoadingButton loading={false}>
+                                Удалить сотрудника
+                            </LoadingButton>}
                         {user.data?.queueUser && !user.data.isSuperAdmin &&
                             <LoadingButton
                                 onClick={() => roleMutation.mutate(

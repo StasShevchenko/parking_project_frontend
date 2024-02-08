@@ -49,11 +49,11 @@ const App = () => {
     const jwtString = window.localStorage.getItem('refreshToken')
     let jwt
     if (jwtString) {
-        jwt = jwtDecode<User>((jwtString))
+        jwt = jwtDecode<{user: User}>(jwtString)
     }
     const [authState, setAuthState] = useState<AuthState>({
         isAuthenticated: jwt != null ? "true" : "false",
-        user: jwt,
+        user: jwt!.user,
     })
     const authContextValue = {
         authState: authState,
