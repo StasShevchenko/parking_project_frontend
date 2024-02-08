@@ -11,6 +11,7 @@ import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
 import {IconButton} from "@mui/material";
 import {ArrowBackIos} from "@mui/icons-material";
 import {useUser} from "../../hooks/useUser.ts";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.tsx";
 
 const UserPage = () => {
     const navigate = useNavigate()
@@ -40,6 +41,7 @@ const UserPage = () => {
         }
     }, [user.data])
 
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     return (
         <PageStateWrapper isLoading={isFirstLoad}>
             <div className={styles.pageWrapper}>
@@ -62,7 +64,7 @@ const UserPage = () => {
                     <div className={styles.buttonsSection}>
                         {((!user.data?.isSuperAdmin && !user.data?.isAdmin) ||
                             (editor.isSuperAdmin && !user.data?.isSuperAdmin)) &&
-                            <LoadingButton loading={false}>
+                            <LoadingButton loading={false} onClick={() => setShowDeleteDialog(true)}>
                                 Удалить сотрудника
                             </LoadingButton>}
                         {user.data?.queueUser && !user.data.isSuperAdmin &&
@@ -76,6 +78,11 @@ const UserPage = () => {
                         }
                     </div>
                 </div>
+                {showDeleteDialog &&  <ConfirmDialog
+                    text="Вы действительно хотите удалить пользователя?"
+                    onConfirm={() => {}}
+                    onClose={() => {setShowDeleteDialog(false)}}
+                />}
             </div>
         </PageStateWrapper>
     );

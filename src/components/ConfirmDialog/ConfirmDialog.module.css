@@ -1,0 +1,21 @@
+.title{
+    color: var(--secondary-blue);
+    border-radius: 50px;
+}
+
+.buttonsSection{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.attentionButton{
+    background: var(--primary-accent-red);
+}
+
+@media (max-width: 760px) {
+    .buttonsSection{
+        flex-direction: column;
+    }
+}
