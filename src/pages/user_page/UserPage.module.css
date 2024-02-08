@@ -1,0 +1,56 @@
+.pageWrapper{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    align-items: center;
+}
+
+.userDataWrapper{
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    align-items: start;
+    min-width: 270px;
+    gap: 20px;
+    color: var(--secondary-blue);
+}
+
+.rolesSection{
+    width: 200px;
+    text-align: left;
+}
+
+.userTitle{
+    color: var(--secondary-blue);
+    font-size: 24px;
+    position: relative;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userNameSection{
+    display: flex;
+    gap: 10px;
+    color: var(--secondary-blue);
+    align-items: center;
+}
+
+.buttonsSection{
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.backButton{
+    position: absolute;
+    left: 0;
+    top: -5px;
+}

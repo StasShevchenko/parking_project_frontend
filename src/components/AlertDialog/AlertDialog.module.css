@@ -1,0 +1,10 @@
+.title{
+    color: var(--secondary-blue);
+    border-radius: 50px;
+}
+
+.content{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}

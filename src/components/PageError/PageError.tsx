@@ -1,9 +1,14 @@
-import {Alert} from "@mui/material";
+import {Alert, Button} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
-export interface PageErrorProps{
+export interface PageErrorProps {
     errorMessage: string
+    onErrorAction: 'reload' | 'navigateBack'
 }
-const PageError = ({errorMessage}:PageErrorProps) => {
+
+const PageError = ({errorMessage, onErrorAction}: PageErrorProps) => {
+    const navigate = useNavigate()
+
     return (
         <div style={{
             height: '100%',
@@ -12,7 +17,28 @@ const PageError = ({errorMessage}:PageErrorProps) => {
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-        <Alert severity="error">{errorMessage}</Alert>
+            <Alert
+                variant="outlined"
+                severity="error"
+                action={
+                    <Button
+                        onClick={() => {
+                            if (onErrorAction === "reload") {
+                                window.location.reload()
+                            } else{
+                                navigate(-1)
+                            }
+                        }}
+                        style={{background: "inherit"}}
+                        color="inherit"
+                        size="small"
+                    >
+                        {onErrorAction === "reload" ? "Обновить страницу" : "Назад"}
+                    </Button>
+                }
+            >
+                {errorMessage}
+            </Alert>
         </div>
     );
 };

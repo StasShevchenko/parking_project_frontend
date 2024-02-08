@@ -7,11 +7,12 @@ import {jwtDecode} from "jwt-decode";
 import {useState} from "react";
 import {AuthContext, AuthState, User} from "./context/auth.context.ts";
 import {AxiosContext} from "./context/axios.context.ts";
-import {AxiosClient} from "./data/axios.client.ts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import HomePage from "./pages/home_page/HomePage.tsx";
 import Root from "./pages/Root/Root.tsx";
 import UsersListPage from "./pages/users_list_page/UsersListPage.tsx";
+import UserPage from "./pages/user_page/UserPage.tsx";
+import {AxiosClient} from "./data/axios/axios.client.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
                 </ProtectedRoute>}>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/users_list" element={<UsersListPage/>}/>
+                <Route path="/users_list/:id" element={<UserPage/>}/>
             </Route>
             <Route path="*" element={<Navigate to="/"/>}/>
         </Route>
@@ -47,11 +49,11 @@ const App = () => {
     const jwtString = window.localStorage.getItem('refreshToken')
     let jwt
     if (jwtString) {
-        jwt = jwtDecode<User>((jwtString))
+        jwt = jwtDecode<{user: User}>(jwtString)
     }
     const [authState, setAuthState] = useState<AuthState>({
         isAuthenticated: jwt != null ? "true" : "false",
-        user: jwt,
+        user: jwt!.user,
     })
     const authContextValue = {
         authState: authState,

@@ -1,4 +1,4 @@
-import {Alert, Button, Checkbox, Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {Alert, Button, Checkbox} from "@mui/material";
 import styles from './AddUserMenu.module.css'
 import IconTextField from "../../../../components/IconInput/IconTextField.tsx";
 import {Email, People} from "@mui/icons-material";
@@ -11,13 +11,13 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {RegisterUserDto} from "../../../../data/dto/registerUser.dto.ts";
 import LoadingButton from "../../../../components/LoadingButton/LoadingButton.tsx";
 import {UserApi} from "../../../../data/user.api.ts";
+import AlertDialog from "../../../../components/AlertDialog/AlertDialog.tsx";
 
 export interface AddUserMenuProps {
-    show: boolean,
     onClose: () => void
 }
 
-const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
+const AddUserMenu = ({onClose}: AddUserMenuProps) => {
 
     const [email, setEmail] = useState('')
     const [emailError, setEmailError] = useState('')
@@ -126,92 +126,82 @@ const AddUserMenu = ({show, onClose}: AddUserMenuProps) => {
     }
 
     return (
-        <div className={styles.dialog}>
-            <Dialog
-                open={show}
-                onClose={() => onClose()}
-                PaperProps={{
-                    sx: {
-                        borderRadius: "20px",
-                        padding: "10px"
-                    }
-                }}
-            >
-                <DialogTitle className={styles.title}>Регистрация пользователя</DialogTitle>
-                <DialogContent className={styles.content}>
-                    <div className={styles.form}>
-                        <IconTextField
-                            label="Введите почту"
-                            startIcon={<Email/>}
-                            value={email}
-                            error={!!emailError}
-                            onChange={(value) => updateEmail(value)}
-                            helperText={emailError}
-                        />
-                        <IconTextField
-                            label="Введите имя"
-                            startIcon={<People/>}
-                            value={firstName}
-                            error={!!firstNameError}
-                            onChange={(value) => updateFirstName(value)}
-                            helperText={firstNameError}
-                        />
-                        <IconTextField
-                            label="Введите фамилию"
-                            value={secondName}
-                            error={!!secondNameError}
-                            onChange={(value) => updateSecondName(value)}
-                            helperText={secondNameError}
-                            startIcon={<People/>}
-                        />
-                        <div className={styles.label}>Роли нового пользователя:</div>
-                        <div className={styles.checkBoxContainer}>
-                            <Checkbox
-                                className={styles.checkBox}
-                                checked={userRoles.includes('admin')}
-                                onChange={() => toggleRole('admin')}
-                                sx={{
-                                    '&.Mui-checked': {
-                                        color: "var(--primary-blue)",
-                                    },
-                                }}
-                            />
-                            Администратор
-                        </div>
-                        <div className={styles.checkBoxContainer}>
-                            <Checkbox
-                                className={styles.checkBox}
-                                checked={userRoles.includes('user')}
-                                onChange={() => toggleRole('user')}
-                                sx={{
-                                    '&.Mui-checked': {
-                                        color: "var(--primary-blue)",
-                                    },
-                                }}
-                            />
-                            Пользователь очереди
-                        </div>
-                        {userRolesError && <div className={styles.errorMessage}>{userRolesError}</div>}
-                        <div className={styles.buttonsSection}>
-                            <Button onClick={() => onClose()}>
-                                Закрыть
-                            </Button>
-                            <LoadingButton loading={isRegisterLoading} style={{flex: 1}} onClick={() => registerUser()}>
-                                Зарегистрировать
-                            </LoadingButton>
-                        </div>
-                        {isUserRegistered && (<Alert onClose={() => {setIsUserRegistered(false)}} severity="success">
-                            Пользователь успешно зарегистрирован!
-                        </Alert>)}
-                        {isRegisterError && (
-                            <Alert onClose={() => {setIsRegisterError(false)}} severity="error">
-                                При регистрации произошла ошибка!
-                            </Alert>
-                        )}
-                    </div>
-                </DialogContent>
-            </Dialog>
-        </div>
+        <AlertDialog onClose={() => onClose()} title="Регистрация пользователя">
+            <div className={styles.form}>
+                <IconTextField
+                    label="Введите почту"
+                    startIcon={<Email/>}
+                    value={email}
+                    error={!!emailError}
+                    onChange={(value) => updateEmail(value)}
+                    helperText={emailError}
+                />
+                <IconTextField
+                    label="Введите имя"
+                    startIcon={<People/>}
+                    value={firstName}
+                    error={!!firstNameError}
+                    onChange={(value) => updateFirstName(value)}
+                    helperText={firstNameError}
+                />
+                <IconTextField
+                    label="Введите фамилию"
+                    value={secondName}
+                    error={!!secondNameError}
+                    onChange={(value) => updateSecondName(value)}
+                    helperText={secondNameError}
+                    startIcon={<People/>}
+                />
+                <div className={styles.label}>Роли нового пользователя:</div>
+                <div className={styles.checkBoxContainer}>
+                    <Checkbox
+                        className={styles.checkBox}
+                        checked={userRoles.includes('admin')}
+                        onChange={() => toggleRole('admin')}
+                        sx={{
+                            '&.Mui-checked': {
+                                color: "var(--primary-blue)",
+                            },
+                        }}
+                    />
+                    Администратор
+                </div>
+                <div className={styles.checkBoxContainer}>
+                    <Checkbox
+                        className={styles.checkBox}
+                        checked={userRoles.includes('user')}
+                        onChange={() => toggleRole('user')}
+                        sx={{
+                            '&.Mui-checked': {
+                                color: "var(--primary-blue)",
+                            },
+                        }}
+                    />
+                    Пользователь очереди
+                </div>
+                {userRolesError && <div className={styles.errorMessage}>{userRolesError}</div>}
+                <div className={styles.buttonsSection}>
+                    <Button onClick={() => onClose()}>
+                        Закрыть
+                    </Button>
+                    <LoadingButton loading={isRegisterLoading} style={{flex: 1}} onClick={() => registerUser()}>
+                        Зарегистрировать
+                    </LoadingButton>
+                </div>
+                {isUserRegistered && (<Alert onClose={() => {
+                    setIsUserRegistered(false)
+                }} severity="success">
+                    Пользователь успешно зарегистрирован!
+                </Alert>)}
+                {isRegisterError && (
+                    <Alert onClose={() => {
+                        setIsRegisterError(false)
+                    }} severity="error">
+                        При регистрации произошла ошибка!
+                    </Alert>
+                )}
+            </div>
+        </AlertDialog>
     );
 };
 
