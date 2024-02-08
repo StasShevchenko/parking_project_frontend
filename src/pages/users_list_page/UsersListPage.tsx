@@ -103,7 +103,6 @@ const UsersListPage = () => {
                     <Add color="inherit"/>
                 </Fab>
                 {showAddUserDialog && <AddUserMenu
-                    show={showAddUserDialog}
                     onClose={() => setShowAddUserDialog(false)}
                 />}
             </div>
