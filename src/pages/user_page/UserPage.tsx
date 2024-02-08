@@ -19,9 +19,10 @@ const UserPage = () => {
     const {id} = useParams()
     const userApi = useApi(UserApi)
     const user = useQuery({
-        queryFn: () => userApi.getUserById({userId: parseInt(id!)}),
-        queryKey: [UserApi.getUserByIdKey, id!]
-    })
+            queryFn: () => userApi.getUserById({userId: parseInt(id!)}),
+            queryKey: [UserApi.getUserByIdKey, id!],
+        }
+    )
     const editor = useUser()
     const roleMutation = useMutation({
         mutationFn: ({userId, isAdmin}: { userId: number, isAdmin: boolean }) => userApi.toggleAdminRole({
@@ -56,6 +57,9 @@ const UserPage = () => {
     return (
         <PageStateWrapper
             isLoading={isFirstLoad}
+            isError={!!user.error}
+            onErrorAction="navigateBack"
+            errorMessage='Пользователь не найден!'
         >
             <div className={styles.pageWrapper}>
                 <div className={styles.userTitle}>

@@ -5,12 +5,13 @@ export interface PageStateWrapperProps{
     isLoading: boolean,
     isError?: boolean,
     errorMessage?: string,
+    onErrorAction?: 'reload' | 'navigateBack'
     children: React.ReactNode
 }
-const PageStateWrapper = ({isLoading, isError, errorMessage, children}: PageStateWrapperProps) => {
+const PageStateWrapper = ({isLoading, isError, onErrorAction, errorMessage, children}: PageStateWrapperProps) => {
     return (
         <>
-            {isError ? <PageError errorMessage={errorMessage!}/> : isLoading ? <PageLoader/> : children }
+            {isError ? <PageError onErrorAction={onErrorAction!} errorMessage={errorMessage!}/> : isLoading ? <PageLoader/> : children }
         </>
     );
 };
