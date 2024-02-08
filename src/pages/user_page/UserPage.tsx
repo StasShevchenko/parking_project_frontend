@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {UserApi} from "../../data/user.api.ts";
 import {useApi} from "../../hooks/useApi.ts";
@@ -8,8 +8,11 @@ import styles from './UserPage.module.css'
 import UserAvatar from "../../components/UserAvatar/UserAvatar.tsx";
 import {getUserRolesString} from "../../data/dto/userInfo.dto.ts";
 import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
+import {IconButton} from "@mui/material";
+import {ArrowBackIos} from "@mui/icons-material";
 
 const UserPage = () => {
+    const navigate = useNavigate()
     const {id} = useParams()
     const userApi = useApi(UserApi)
     const user = useQuery({
@@ -27,8 +30,12 @@ const UserPage = () => {
     return (
         <PageStateWrapper isLoading={isFirstLoad}>
             <div className={styles.pageWrapper}>
+                <div className={styles.userTitle}>
+                    <IconButton onClick={()=> navigate(-1)} className={styles.backButton}>
+                        <ArrowBackIos/>
+                    </IconButton>Сотрудник
+                </div>
                 <div className={styles.userDataWrapper}>
-                    <div className={styles.userTitle}>Информация о сотруднике</div>
                     <div className={styles.userNameSection}>
                         <UserAvatar avatarPath={user.data?.avatar}/>
                         {user.data?.firstName + " " + user.data?.secondName}

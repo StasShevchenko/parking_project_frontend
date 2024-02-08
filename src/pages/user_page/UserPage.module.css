@@ -2,24 +2,32 @@
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    align-items: center;
 }
 
 .userDataWrapper{
     display: flex;
     flex-direction: column;
     padding-top: 10px;
-    align-items: center;
+    align-items: start;
     max-width: 350px;
-    gap: 15px;
+    gap: 20px;
     color: var(--secondary-blue);
 }
 
 .userTitle{
     color: var(--secondary-blue);
     font-size: 24px;
+    position: relative;
+    width: 100%;
     font-weight: bold;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .userNameSection{
@@ -34,4 +42,10 @@
     flex-direction: column;
     gap: 15px;
     align-items: stretch;
+}
+
+.backButton{
+    position: absolute;
+    left: 0;
+    top: -5px;
 }
