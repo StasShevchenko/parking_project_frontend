@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserApi} from "../../data/user.api.ts";
 import {useApi} from "../../hooks/useApi.ts";
 import PageStateWrapper from "../../components/PageStateWrapper/PageStateWrapper.tsx";
@@ -13,11 +13,23 @@ import {ArrowBackIos} from "@mui/icons-material";
 
 const UserPage = () => {
     const navigate = useNavigate()
+    const client = useQueryClient()
     const {id} = useParams()
     const userApi = useApi(UserApi)
     const user = useQuery({
         queryFn: () => userApi.getUserById({userId: parseInt(id!)}),
         queryKey: [UserApi.getUserByIdKey, id!]
+    })
+
+    const roleMutation = useMutation({
+        mutationFn: ({userId, isAdmin}: { userId: number, isAdmin: boolean }) => userApi.toggleAdminRole({
+                userId: userId,
+                isAdmin: isAdmin
+            }
+        ),
+        onSuccess: () => {
+            client.invalidateQueries({queryKey: [UserApi.getUserByIdKey]})
+        }
     })
 
     const [isFirstLoad, setIsFirstLoad] = useState(true)
@@ -31,7 +43,7 @@ const UserPage = () => {
         <PageStateWrapper isLoading={isFirstLoad}>
             <div className={styles.pageWrapper}>
                 <div className={styles.userTitle}>
-                    <IconButton onClick={()=> navigate(-1)} className={styles.backButton}>
+                    <IconButton onClick={() => navigate(-1)} className={styles.backButton}>
                         <ArrowBackIos/>
                     </IconButton>Сотрудник
                 </div>
@@ -43,7 +55,7 @@ const UserPage = () => {
                     <div>
                         {`Почта: ${user.data?.email}`}
                     </div>
-                    <div style={{textAlign: 'center'}}>
+                    <div className={styles.rolesSection}>
                         {`Роли: ${getUserRolesString(user.data!)}`}
                     </div>
                     <div className={styles.buttonsSection}>
@@ -51,7 +63,11 @@ const UserPage = () => {
                             Удалить сотрудника
                         </LoadingButton>
                         {user.data?.queueUser && !user.data.isSuperAdmin &&
-                            <LoadingButton loading={false}>
+                            <LoadingButton
+                                onClick={() => roleMutation.mutate(
+                                    {userId: user.data!.id, isAdmin: user.data!.isAdmin}
+                                )}
+                                loading={roleMutation.isPending}>
                                 {user.data?.isAdmin ? 'Убрать' : 'Добавить'} роль администратора
                             </LoadingButton>
                         }

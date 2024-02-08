@@ -7,12 +7,12 @@ import {jwtDecode} from "jwt-decode";
 import {useState} from "react";
 import {AuthContext, AuthState, User} from "./context/auth.context.ts";
 import {AxiosContext} from "./context/axios.context.ts";
-import {AxiosClient} from "./data/axios.client.ts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import HomePage from "./pages/home_page/HomePage.tsx";
 import Root from "./pages/Root/Root.tsx";
 import UsersListPage from "./pages/users_list_page/UsersListPage.tsx";
 import UserPage from "./pages/user_page/UserPage.tsx";
+import {AxiosClient} from "./data/axios/axios.client.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
