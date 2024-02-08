@@ -10,6 +10,7 @@ export interface User{
     secondName: string
     changedPassword: boolean
     avatar?: string
+    [key: string]: boolean | number | string | undefined
 }
 
 export type Role = 'user' | 'admin' | 'super_admin'

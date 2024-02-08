@@ -1,25 +1,24 @@
 import styles from './NavMenu.module.css'
-import {ReactNode} from "react";
+import {Destination} from "../../pages/root_page/destinations.tsx";
 
 export interface NavMenuProps {
-    children?: ReactNode[]
-    labels?: string[]
+    destinations: Destination[]
     onItemSelect?: (index: number) => void,
     selectedIndex?: number
 }
 
-const NavMenu = ({children, labels, selectedIndex, onItemSelect}: NavMenuProps) => {
+const NavMenu = ({selectedIndex, onItemSelect, destinations}: NavMenuProps) => {
     return (
         <div className={styles.navMenuWrapper}>
-            {children?.map((child, index) =>
-                <div key={index} className={styles.navMenuItem} onClick={() => onItemSelect?.(index)}>
+            {destinations?.map((item, index) =>
+                <div key={item.path} className={styles.navMenuItem} onClick={() => onItemSelect?.(index)}>
                     <div className={
                         styles.iconPill + " " +
                         (selectedIndex === index ? styles.selectedItem : '')}>
                         <div className={styles.iconPillSurface}/>
-                        <div className={styles.iconWrapper}>{child}</div>
+                        <div className={styles.iconWrapper}>{item.icon}</div>
                     </div>
-                    {labels?.[index]}
+                    {item.label}
                 </div>)
             }
         </div>
