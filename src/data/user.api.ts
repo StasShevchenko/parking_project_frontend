@@ -36,7 +36,7 @@ export class UserApi extends Api{
     }
 
     async deleteUser({userId, isAdmin}: {userId: number, isAdmin: boolean}): Promise<unknown>{
-        const url = isAdmin ? '/admin/' : '/'
+        const url = isAdmin ? '/user/admin/' : '/user/'
         await this.axios.delete<unknown, unknown>(`${url}${userId}`)
         return
     }

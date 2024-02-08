@@ -34,6 +34,17 @@ const UserPage = () => {
         }
     })
 
+    const deleteMutation = useMutation({
+        mutationFn: ({userId, isAdmin}: { userId: number, isAdmin: boolean }) => userApi.deleteUser({
+            userId: userId,
+            isAdmin: isAdmin
+        }),
+        onSuccess: () => {
+            navigate(-1)
+            client.invalidateQueries({queryKey: [UserApi.getAllUsersKey]})
+        }
+    })
+
     const [isFirstLoad, setIsFirstLoad] = useState(true)
     useEffect(() => {
         if (user.data) {
@@ -43,7 +54,9 @@ const UserPage = () => {
 
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     return (
-        <PageStateWrapper isLoading={isFirstLoad}>
+        <PageStateWrapper
+            isLoading={isFirstLoad}
+        >
             <div className={styles.pageWrapper}>
                 <div className={styles.userTitle}>
                     <IconButton onClick={() => navigate(-1)} className={styles.backButton}>
@@ -63,8 +76,8 @@ const UserPage = () => {
                     </div>
                     <div className={styles.buttonsSection}>
                         {((!user.data?.isSuperAdmin && !user.data?.isAdmin) ||
-                            (editor.isSuperAdmin && !user.data?.isSuperAdmin)) &&
-                            <LoadingButton loading={false} onClick={() => setShowDeleteDialog(true)}>
+                                (editor.isSuperAdmin && !user.data?.isSuperAdmin)) &&
+                            <LoadingButton loading={deleteMutation.isPending} onClick={() => setShowDeleteDialog(true)}>
                                 Удалить сотрудника
                             </LoadingButton>}
                         {user.data?.queueUser && !user.data.isSuperAdmin &&
@@ -78,10 +91,19 @@ const UserPage = () => {
                         }
                     </div>
                 </div>
-                {showDeleteDialog &&  <ConfirmDialog
+                {showDeleteDialog && <ConfirmDialog
                     text="Вы действительно хотите удалить пользователя?"
-                    onConfirm={() => {}}
-                    onClose={() => {setShowDeleteDialog(false)}}
+                    onConfirm={() => {
+                        deleteMutation.mutate(
+                            {
+                                userId: user.data!.id,
+                                isAdmin: user.data!.isAdmin
+                            })
+                        setShowDeleteDialog(false)
+                    }}
+                    onClose={() => {
+                        setShowDeleteDialog(false)
+                    }}
                 />}
             </div>
         </PageStateWrapper>
