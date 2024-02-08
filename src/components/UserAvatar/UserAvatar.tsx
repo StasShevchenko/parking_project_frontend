@@ -2,7 +2,7 @@ import styles from './UserAvatar.module.css'
 import {AccountCircleSharp} from "@mui/icons-material";
 
 export interface UserAvatarProps {
-    avatarPath: string
+    avatarPath?: string
 }
 const UserAvatar = ({avatarPath}: UserAvatarProps) => {
     return (
