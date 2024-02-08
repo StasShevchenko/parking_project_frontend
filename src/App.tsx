@@ -60,7 +60,7 @@ const App = () => {
     }
     const [authState, setAuthState] = useState<AuthState>({
         isAuthenticated: jwt != null ? "true" : "false",
-        user: jwt!.user,
+        user: jwt?.user,
     })
     const authContextValue = {
         authState: authState,
