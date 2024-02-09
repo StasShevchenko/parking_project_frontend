@@ -69,7 +69,6 @@ const App = () => {
         authState: authState,
         setAuthState: setAuthState,
         updateUser: async () => {
-            console.log('update user calles')
             const authApi = new AuthApi(axios.create({
                 baseURL: 'http://localhost:3000'
             }))

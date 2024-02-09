@@ -22,7 +22,6 @@ export class AuthApi extends Api{
             {
                 refresh: currentRefresh
             });
-        console.log(result)
         window.localStorage.setItem('refreshToken', result.data.refreshToken)
         return result.data.refreshToken
     }
