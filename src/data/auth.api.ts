@@ -11,4 +11,8 @@ export class AuthApi extends Api{
     async register(userInfo: RegisterUserDto): Promise<unknown>{
         return await this.axios.post('/auth/register', userInfo)
     }
+
+    async logout(): Promise<unknown>{
+        return await this.axios.post('/auth/logout')
+    }
 }

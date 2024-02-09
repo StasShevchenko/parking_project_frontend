@@ -4,10 +4,23 @@ import UserAvatar from "../../components/UserAvatar/UserAvatar.tsx";
 import {getUserRolesString} from "../../data/dto/userInfo.dto.ts";
 import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
 import {Button} from "@mui/material";
+import {useApi} from "../../hooks/useApi.ts";
+import {AuthApi} from "../../data/auth.api.ts";
+import {useContext} from "react";
+import {AuthContext} from "../../context/auth.context.ts";
 
 const UserProfilePage = () => {
     const user = useUser()
-
+    const authApi = useApi(AuthApi)
+    const {authState, setAuthState} = useContext(AuthContext)!
+    const logout = () => {
+        authApi.logout()
+        window.localStorage.removeItem('refreshToken')
+        setAuthState({
+            ...authState,
+            isAuthenticated: "false"
+        })
+    }
     return (
         <div className={styles.pageWrapper}>
             <div className={styles.title}>
@@ -35,7 +48,7 @@ const UserProfilePage = () => {
                 <LoadingButton loading={false}>
                     Сменить пароль
                 </LoadingButton>
-                <Button>
+                <Button onClick={() => logout()}>
                     Выйти
                 </Button>
             </div>
