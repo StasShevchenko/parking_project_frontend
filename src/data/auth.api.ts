@@ -11,4 +11,18 @@ export class AuthApi extends Api{
     async register(userInfo: RegisterUserDto): Promise<unknown>{
         return await this.axios.post('/auth/register', userInfo)
     }
+
+    async logout(): Promise<unknown>{
+        return await this.axios.post('/auth/logout')
+    }
+
+    async getNewRefresh(): Promise<string>{
+        const currentRefresh = window.localStorage.getItem('refreshToken')
+        const result  = await this.axios.post<TokensDto>('/token/refresh',
+            {
+                refresh: currentRefresh
+            });
+        window.localStorage.setItem('refreshToken', result.data.refreshToken)
+        return result.data.refreshToken
+    }
 }

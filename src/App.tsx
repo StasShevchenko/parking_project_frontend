@@ -15,6 +15,9 @@ import UserPage from "./pages/user_page/UserPage.tsx";
 import {AxiosClient} from "./data/axios/axios.client.ts";
 import SwapRequestsPage from "./pages/swap_requests_page/SwapRequestsPage.tsx";
 import UserProfilePage from "./pages/user_profile_page/UserProfilePage.tsx";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import {AuthApi} from "./data/auth.api.ts";
+import axios from "axios";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -64,8 +67,20 @@ const App = () => {
     })
     const authContextValue = {
         authState: authState,
-        setAuthState: setAuthState
+        setAuthState: setAuthState,
+        updateUser: async () => {
+            const authApi = new AuthApi(axios.create({
+                baseURL: 'http://localhost:3000'
+            }))
+            const refresh = await authApi.getNewRefresh()
+            const jwt = jwtDecode<{user: User}>(refresh)
+            setAuthState({
+                ...authState,
+                user: jwt.user
+            })
+        }
     }
+
     const axiosInstance = AxiosClient.get(authContextValue)
 
     return (
@@ -79,6 +94,7 @@ const App = () => {
                     </AuthContext.Provider>
                 </ThemeProvider>
             </StyledEngineProvider>
+            <ReactQueryDevtools buttonPosition="top-right" initialIsOpen={false} />
         </QueryClientProvider>
     );
 };

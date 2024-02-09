@@ -20,9 +20,10 @@ export interface AuthState{
     user?: User
 }
 
-export interface AuthContextType{
+export interface AuthContextType {
     authState: AuthState
     setAuthState: (authState: AuthState) => void
+    updateUser: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -30,5 +31,6 @@ export const AuthContext = createContext<AuthContextType>({
         isAuthenticated: 'false',
         user: undefined
     },
+    updateUser: async () => {},
     setAuthState: () => {}
 })
