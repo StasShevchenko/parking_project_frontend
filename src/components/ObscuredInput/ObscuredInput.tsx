@@ -8,9 +8,10 @@ export interface ObscuredInputProps{
     helperText?: string
     label?: string
     value?: string
+    onChange?: (value: string) => void
     startIcon?: React.ReactNode
 }
-const ObscuredInput = ({error, helperText, label, value, startIcon}:ObscuredInputProps) => {
+const ObscuredInput = ({error, onChange, helperText, label, value, startIcon}:ObscuredInputProps) => {
     const [show, setShow] = useState(false)
 
     return (
@@ -19,6 +20,7 @@ const ObscuredInput = ({error, helperText, label, value, startIcon}:ObscuredInpu
             helperText={helperText}
             label={label}
             value={value}
+            onChange={onChange}
             startIcon={startIcon}
             type={show ? "text" : "password"}
             endIcon={
