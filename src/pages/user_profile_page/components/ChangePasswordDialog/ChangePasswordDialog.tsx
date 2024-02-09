@@ -3,14 +3,21 @@ import styles from './ChangePasswordDialog.module.css'
 import ObscuredInput from "../../../../components/ObscuredInput/ObscuredInput.tsx";
 import {Lock} from "@mui/icons-material";
 import LoadingButton from "../../../../components/LoadingButton/LoadingButton.tsx";
-import {Button} from "@mui/material";
-import {useState} from "react";
+import {Alert, Button} from "@mui/material";
+import {useContext, useState} from "react";
+import {UserApi} from "../../../../data/user.api.ts";
+import {useApi} from "../../../../hooks/useApi.ts";
+import {useMutation} from "@tanstack/react-query";
+import {ChangePasswordDto} from "../../../../data/dto/changePassword.dto.ts";
+import {AxiosError} from "axios";
+import {AuthContext} from "../../../../context/auth.context.ts";
 
 export interface ChangePasswordDialog {
     onClose: () => void
 }
 
 const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
+    const {authState, setAuthState} = useContext(AuthContext)
 
     const [oldPassword, setOldPassword] = useState('')
     const [oldPasswordError, setOldPasswordError] = useState('')
@@ -21,22 +28,54 @@ const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
     const [repeatPassword, setRepeatPassword] = useState('')
     const [repeatPasswordError, setRepeatPasswordError] = useState('')
 
+    const [passwordChanged, setPasswordChanged] = useState(false)
+
+    const userApi = useApi(UserApi)
+    const changePasswordMutation = useMutation({
+        mutationFn: ({data}: { data: ChangePasswordDto }) => userApi.changePassword(data),
+        onError: (error: AxiosError) => {
+            if ((error.response?.data as any).message === 'Wrong password') {
+                setOldPasswordError('Неверный пароль!')
+            }
+            if ((error.response?.data as any).message === 'Passwords should match') {
+                setRepeatPasswordError('Пароли должны совпадать!')
+            }
+            if ((error.response?.data as any).message === 'Weak password') {
+                setNewPasswordError('Слабый пароль! (используйте буквы и цифры)')
+            }
+        },
+        onSuccess: () => {
+            setPasswordChanged(true)
+            setAuthState({
+                ...authState,
+                user: {
+                    ...authState.user!,
+                    changedPassword: true
+                }
+            })
+            clearForm()
+        }
+    })
+
     const clearErrors = () => {
         setOldPasswordError('')
         setNewPasswordError('')
         setRepeatPasswordError('')
     }
     const updateOldPassword = (value: string) => {
+        setPasswordChanged(false)
         setOldPassword(value)
         clearErrors()
     }
 
     const updateNewPassword = (value: string) => {
+        setPasswordChanged(false)
         setNewPassword(value)
         clearErrors()
     }
 
     const updateRepeatPassword = (value: string) => {
+        setPasswordChanged(false)
         setRepeatPassword(value)
         clearErrors()
     }
@@ -73,7 +112,16 @@ const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
     }
 
     const changePassword = () => {
-        const isValid = validateForm()
+        const isValid = !validateForm()
+        if (isValid) {
+            changePasswordMutation.mutate({
+                data: {
+                    oldPassword: oldPassword,
+                    newPassword: newPassword,
+                    repeatNewPassword: repeatPassword
+                }
+            })
+        }
     }
 
     return (
@@ -113,10 +161,13 @@ const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
                     <Button onClick={() => onClose()}>
                         Закрыть
                     </Button>
-                    <LoadingButton onClick={() => changePassword()} loading={false}>
+                    <LoadingButton onClick={() => changePassword()} loading={changePasswordMutation.isPending}>
                         Сменить пароль
                     </LoadingButton>
                 </div>
+                {passwordChanged && <Alert onClose={() => setPasswordChanged(false)} security="success">
+                    Смена пароля прошла успешно!
+                </Alert>}
             </div>
         </AlertDialog>
     );

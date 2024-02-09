@@ -2,6 +2,7 @@ import {Api} from "./api.ts";
 import {UserInfoDto} from "./dto/userInfo.dto.ts";
 import {Role} from "../context/auth.context.ts";
 import {ToggleAdminRoleDto} from "./dto/toggleAdminRole.dto.ts";
+import {ChangePasswordDto} from "./dto/changePassword.dto.ts";
 
 export class UserApi extends Api{
     static getAllUsersKey = 'getAllUsers'
@@ -37,7 +38,14 @@ export class UserApi extends Api{
 
     async deleteUser({userId, isAdmin}: {userId: number, isAdmin: boolean}): Promise<unknown>{
         const url = isAdmin ? '/user/admin/' : '/user/'
-        await this.axios.delete<unknown, unknown>(`${url}${userId}`)
+        await this.axios.delete(`${url}${userId}`)
+        return
+    }
+
+    async changePassword(
+        changePasswordDto: ChangePasswordDto
+    ): Promise<unknown>{
+        await this.axios.post<unknown, unknown, ChangePasswordDto>('/user/changePassword', changePasswordDto)
         return
     }
 }
