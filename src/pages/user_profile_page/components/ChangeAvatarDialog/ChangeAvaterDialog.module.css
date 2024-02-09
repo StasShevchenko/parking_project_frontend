@@ -8,6 +8,19 @@
     display: none;
 }
 
+.avatar{
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    transition: all 100ms ease-in-out;
+}
+
+.avatarSelected{
+    border: 4px solid var(--primary-blue);
+    border-radius: 100%;
+    transition: all 100ms ease-in-out;
+}
+
 .avatarsWrapper{
     height: 400px;
     width: 400px;

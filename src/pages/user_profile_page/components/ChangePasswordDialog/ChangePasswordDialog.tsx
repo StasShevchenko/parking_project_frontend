@@ -17,7 +17,7 @@ export interface ChangePasswordDialog {
 }
 
 const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
-    const {authState, setAuthState} = useContext(AuthContext)
+    const {authState, setAuthState, updateUser} = useContext(AuthContext)
 
     const [oldPassword, setOldPassword] = useState('')
     const [oldPasswordError, setOldPasswordError] = useState('')
@@ -45,6 +45,7 @@ const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
             }
         },
         onSuccess: () => {
+            updateUser()
             setPasswordChanged(true)
             setAuthState({
                 ...authState,

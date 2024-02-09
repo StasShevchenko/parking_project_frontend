@@ -15,4 +15,15 @@ export class AuthApi extends Api{
     async logout(): Promise<unknown>{
         return await this.axios.post('/auth/logout')
     }
+
+    async getNewRefresh(): Promise<string>{
+        const currentRefresh = window.localStorage.getItem('refreshToken')
+        const result  = await this.axios.post<TokensDto>('/token/refresh',
+            {
+                refresh: currentRefresh
+            });
+        console.log(result)
+        window.localStorage.setItem('refreshToken', result.data.refreshToken)
+        return result.data.refreshToken
+    }
 }
