@@ -7,6 +7,7 @@ import {ChangePasswordDto} from "./dto/changePassword.dto.ts";
 export class UserApi extends Api{
     static getAllUsersKey = 'getAllUsers'
     static getUserByIdKey = 'getUser'
+    static getAvatarsKey = 'getAvatars'
     async getAllUsers({roles = [], fullName = ''}: {roles?: Role[], fullName?: string}): Promise<UserInfoDto[]> {
         const response = await this.axios.get<UserInfoDto[]>('/user',{
             params: {
@@ -47,5 +48,10 @@ export class UserApi extends Api{
     ): Promise<unknown>{
         await this.axios.post<unknown, unknown, ChangePasswordDto>('/user/changePassword', changePasswordDto)
         return
+    }
+
+    async getAvatars(): Promise<string[]>{
+        const response = await this.axios.get('/avatar')
+        return response.data
     }
 }

@@ -2,18 +2,20 @@ import styles from './UserProfilePage.module.css'
 import {useUser} from "../../hooks/useUser.ts";
 import UserAvatar from "../../components/UserAvatar/UserAvatar.tsx";
 import {getUserRolesString} from "../../data/dto/userInfo.dto.ts";
-import {Button} from "@mui/material";
+import {Button, ButtonBase} from "@mui/material";
 import {useApi} from "../../hooks/useApi.ts";
 import {AuthApi} from "../../data/auth.api.ts";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../context/auth.context.ts";
 import ChangePasswordDialog from "./components/ChangePasswordDialog/ChangePasswordDialog.tsx";
+import ChangeAvatarDialog from "./components/ChangeAvatarDialog/ChangeAvatarDialog.tsx";
 
 const UserProfilePage = () => {
     const user = useUser()
     const authApi = useApi(AuthApi)
     const {authState, setAuthState} = useContext(AuthContext)!
     const [showChangePasswordDialog, setShowChangePasswordDialog] = useState(false)
+    const [showChangeAvatarDialog, setShowChangeAvatarDialog] = useState(false)
     const logout = () => {
         authApi.logout()
         window.localStorage.removeItem('refreshToken')
@@ -29,7 +31,9 @@ const UserProfilePage = () => {
             </div>
             <div className={styles.userInfo}>
                 <div className={styles.userNameSection}>
-                    <UserAvatar avatarPath={user.avatar}/>
+                    <ButtonBase onClick={() => setShowChangeAvatarDialog(true)} style={{borderRadius: "100%"}}>
+                        <UserAvatar avatarPath={user.avatar}/>
+                    </ButtonBase>
                     Рады вас видеть, {user.firstName}
                 </div>
                 <div className={styles.card}>
@@ -56,6 +60,10 @@ const UserProfilePage = () => {
             {showChangePasswordDialog && <ChangePasswordDialog
                 onClose={() => setShowChangePasswordDialog(false)}
             />}
+            {showChangeAvatarDialog &&
+                <ChangeAvatarDialog
+                    onClose={() => setShowChangeAvatarDialog(false)}/>
+            }
         </div>
     );
 };
