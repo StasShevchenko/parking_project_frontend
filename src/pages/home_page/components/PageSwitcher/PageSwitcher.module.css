@@ -1,0 +1,23 @@
+.switcher{
+    height: 45px;
+    width: 100%;
+    background: lightgray;
+    border-radius: 15px;
+    padding: 5px;
+    display: flex;
+    gap: 10px;
+}
+
+.switcherChild{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    align-items: center;
+}
+.selectedSwitcherChild{
+    background: var(--primary-white);
+}

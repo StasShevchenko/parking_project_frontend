@@ -1,0 +1,17 @@
+.pageWrapper{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pageContent{
+    flex: 1;
+}
+
+.desktopPageContent{
+    flex: 1;
+    display: flex;
+    gap: 20px;
+}
