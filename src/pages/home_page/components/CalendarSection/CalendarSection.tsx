@@ -2,20 +2,21 @@ import {DateCalendar} from "@mui/x-date-pickers";
 import {PickersDay, PickersDayProps} from '@mui/x-date-pickers/PickersDay';
 import styles from './CalendarSection.module.css'
 import dayjs, {Dayjs} from "dayjs";
+import {UserInfoDto} from "../../../../data/dto/userInfo.dto.ts";
 
-const FuckingDay = (props: PickersDayProps<Dayjs> & { isActive?: boolean }) => {
+const CalendarDay = (props: PickersDayProps<Dayjs> & { isActive?: boolean }) => {
     const {day} = props
     const needHighlight = (day.month() === dayjs().month()
         && day.year() === dayjs().year())
     return (
         <PickersDay
-            sx={ props.isActive && needHighlight ? {
-                '&:not(.MuiPickersDay-dayOutsideMonth)':{
+            sx={props.isActive && needHighlight ? {
+                '&:not(.MuiPickersDay-dayOutsideMonth)': {
                     scale: "0.9",
                     borderRadius: "10px",
                     background: "red",
-                    color: "white",
-                    '&:hover':{
+                    color: "white !important",
+                    '&:hover': {
                         background: "red"
                     }
                 }
@@ -23,14 +24,19 @@ const FuckingDay = (props: PickersDayProps<Dayjs> & { isActive?: boolean }) => {
             {...props}
         />)
 }
-const CalendarSection = () => {
+
+export interface CalendarSectionProps {
+    userInfo: UserInfoDto
+}
+
+const CalendarSection = ({userInfo}: CalendarSectionProps) => {
     return (
         <div className={styles.calendarWrapper}>
-            <div className={styles.blurContainer}>
+            {(!userInfo.active) && <div className={styles.blurContainer}>
                 <div className={styles.accessLabel}>
-                    До вашей очереди осталось: 20 дней
+                    До вашей очереди осталось: {dayjs().diff(dayjs(userInfo.startDate), 'days')} дней
                 </div>
-            </div>
+            </div>}
             <DateCalendar
                 disabled
                 readOnly
@@ -42,11 +48,11 @@ const CalendarSection = () => {
                     }
                 }}
                 slots={{
-                    day: FuckingDay
+                    day: CalendarDay
                 }}
                 slotProps={{
                     day: {
-                        isActive: false
+                        isActive: userInfo.active
                     } as any
                 }}
             />

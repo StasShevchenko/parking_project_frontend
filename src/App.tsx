@@ -74,7 +74,7 @@ const App = () => {
         setAuthState: setAuthState,
         updateUser: async () => {
             const authApi = new AuthApi(axios.create({
-                baseURL: 'http://localhost:3000'
+                baseURL: import.meta.env.VITE_BASE_URL
             }))
             const refresh = await authApi.getNewRefresh()
             const jwt = jwtDecode<{ user: User }>(refresh)
