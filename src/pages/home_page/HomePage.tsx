@@ -3,6 +3,7 @@ import PageStateWrapper from "../../components/PageStateWrapper/PageStateWrapper
 import PageSwitcher from "./components/PageSwitcher/PageSwitcher.tsx";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useState} from "react";
+import CalendarSection from "./components/CalendarSection/CalendarSection.tsx";
 
 const HomePage = () => {
     const [tabIndex, setTabIndex] = useState(0)
@@ -19,14 +20,14 @@ const HomePage = () => {
                             />
                             <div className={styles.pageContent}>
                                 {tabIndex === 0 ?
-                                    <div>0</div> :
+                                    <CalendarSection/> :
                                     <div>1</div>
                                 }
                             </div>
                         </>
                     ) :
                     <div className={styles.desktopPageContent}>
-
+                        <CalendarSection/>
                     </div>}
             </div>
         </PageStateWrapper>

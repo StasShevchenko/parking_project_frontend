@@ -18,6 +18,10 @@ import UserProfilePage from "./pages/user_profile_page/UserProfilePage.tsx";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {AuthApi} from "./data/auth.api.ts";
 import axios from "axios";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import { ruRU } from '@mui/x-date-pickers/locales';
+import 'dayjs/locale/ru.js'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,8 +34,8 @@ const router = createBrowserRouter(
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/swap_requests" element={
                     <ProtectedRoute role="queueUser">
-                    <SwapRequestsPage/>
-                </ProtectedRoute>  }/>
+                        <SwapRequestsPage/>
+                    </ProtectedRoute>}/>
                 <Route path="/users_list" element={<UsersListPage/>}/>
                 <Route path="/users_list/:id" element={<UserPage/>}/>
                 <Route path="/user_profile" element={<UserProfilePage/>}/>
@@ -59,7 +63,7 @@ const App = () => {
     const jwtString = window.localStorage.getItem('refreshToken')
     let jwt
     if (jwtString) {
-        jwt = jwtDecode<{user: User}>(jwtString)
+        jwt = jwtDecode<{ user: User }>(jwtString)
     }
     const [authState, setAuthState] = useState<AuthState>({
         isAuthenticated: jwt != null ? "true" : "false",
@@ -73,7 +77,7 @@ const App = () => {
                 baseURL: 'http://localhost:3000'
             }))
             const refresh = await authApi.getNewRefresh()
-            const jwt = jwtDecode<{user: User}>(refresh)
+            const jwt = jwtDecode<{ user: User }>(refresh)
             setAuthState({
                 ...authState,
                 user: jwt.user
@@ -86,15 +90,20 @@ const App = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={componentsTheme}>
-                    <AuthContext.Provider value={authContextValue}>
-                        <AxiosContext.Provider value={axiosInstance}>
-                            <RouterProvider router={router}/>
-                        </AxiosContext.Provider>
-                    </AuthContext.Provider>
-                </ThemeProvider>
+                <LocalizationProvider
+                    adapterLocale='ru'
+                    localeText={ruRU.components.MuiLocalizationProvider.defaultProps.localeText}
+                    dateAdapter={AdapterDayjs}>
+                    <ThemeProvider theme={componentsTheme}>
+                        <AuthContext.Provider value={authContextValue}>
+                            <AxiosContext.Provider value={axiosInstance}>
+                                <RouterProvider router={router}/>
+                            </AxiosContext.Provider>
+                        </AuthContext.Provider>
+                    </ThemeProvider>
+                </LocalizationProvider>
             </StyledEngineProvider>
-            <ReactQueryDevtools buttonPosition="top-right" initialIsOpen={false} />
+            <ReactQueryDevtools buttonPosition="top-right" initialIsOpen={false}/>
         </QueryClientProvider>
     );
 };

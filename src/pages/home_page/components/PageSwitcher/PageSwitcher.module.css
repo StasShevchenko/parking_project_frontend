@@ -17,6 +17,7 @@
     font-size: 12px;
     font-weight: bold;
     align-items: center;
+    cursor: pointer;
 }
 .selectedSwitcherChild{
     background: var(--primary-white);
