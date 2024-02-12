@@ -31,31 +31,37 @@ export interface CalendarSectionProps {
 
 const CalendarSection = ({userInfo}: CalendarSectionProps) => {
     return (
-        <div className={styles.calendarWrapper}>
-            {(!userInfo.active) && <div className={styles.blurContainer}>
-                <div className={styles.accessLabel}>
-                    До вашей очереди осталось: {dayjs().diff(dayjs(userInfo.startDate), 'days')} дней
-                </div>
+        <div className={styles.calendarContainer}>
+            {userInfo.active && <div className={styles.legendContainer}>
+                <div className={styles.legendMark}/>
+                Дни доступа к парковке
             </div>}
-            <DateCalendar
-                disabled
-                readOnly
-                disableHighlightToday
-                showDaysOutsideCurrentMonth
-                sx={{
-                    '& .MuiPickersCalendarHeader-label': {
-                        textTransform: 'capitalize'
-                    }
-                }}
-                slots={{
-                    day: CalendarDay
-                }}
-                slotProps={{
-                    day: {
-                        active: userInfo.active ? "true" : ""
-                    } as any
-                }}
-            />
+            <div className={styles.calendarWrapper}>
+                {(!userInfo.active) && <div className={styles.blurContainer}>
+                    <div className={styles.accessLabel}>
+                        До вашей очереди осталось: {dayjs().diff(dayjs(userInfo.startDate), 'days')} дней
+                    </div>
+                </div>}
+                <DateCalendar
+                    disabled
+                    readOnly
+                    disableHighlightToday
+                    showDaysOutsideCurrentMonth
+                    sx={{
+                        '& .MuiPickersCalendarHeader-label': {
+                            textTransform: 'capitalize'
+                        }
+                    }}
+                    slots={{
+                        day: CalendarDay
+                    }}
+                    slotProps={{
+                        day: {
+                            active: userInfo.active ? "true" : ""
+                        } as any
+                    }}
+                />
+            </div>
         </div>
     );
 };
