@@ -12,11 +12,10 @@ import {SwapHoriz} from "@mui/icons-material";
 export interface QueueItemProps {
     user: UserInPeriodDto
     onClick?: (userId: number) => void
-    indexCycle: number
     startDate: string
 }
 
-const QueueItem = ({user, onClick, indexCycle, startDate}: QueueItemProps) => {
+const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
     const me = useUser()
     const userApi = useApi(UserApi)
     const userInfo = useQuery({
@@ -27,7 +26,7 @@ const QueueItem = ({user, onClick, indexCycle, startDate}: QueueItemProps) => {
 
         return !currentUser?.active &&
             !user.active &&
-            indexCycle === 0 &&
+            !user.fromNextPeriod &&
             currentUser?.startActiveTime != startDate
     }
 
@@ -35,7 +34,7 @@ const QueueItem = ({user, onClick, indexCycle, startDate}: QueueItemProps) => {
         <CardActionArea
             onClick={() => onClick?.(user.id)}
             style={{borderRadius: "var(--card-radius)"}}>
-            <Card className={styles.card + " " + (indexCycle !== 0 ? styles.cardPale : '')}>
+            <Card className={styles.card + " " + (user.fromNextPeriod ? styles.cardPale : '')}>
                 <div className={styles.cardContent}>
                     <div className={styles.nameSectionContainer}>
                         <div className={styles.nameSection}>
