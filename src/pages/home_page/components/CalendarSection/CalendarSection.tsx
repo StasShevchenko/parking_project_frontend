@@ -4,13 +4,13 @@ import styles from './CalendarSection.module.css'
 import dayjs, {Dayjs} from "dayjs";
 import {UserInfoDto} from "../../../../data/dto/userInfo.dto.ts";
 
-const CalendarDay = (props: PickersDayProps<Dayjs> & { isActive?: boolean }) => {
+const CalendarDay = (props: PickersDayProps<Dayjs> & { active?: string }) => {
     const {day} = props
     const needHighlight = (day.month() === dayjs().month()
         && day.year() === dayjs().year())
     return (
         <PickersDay
-            sx={props.isActive && needHighlight ? {
+            sx={props.active && needHighlight ? {
                 '&:not(.MuiPickersDay-dayOutsideMonth)': {
                     scale: "0.9",
                     borderRadius: "10px",
@@ -52,7 +52,7 @@ const CalendarSection = ({userInfo}: CalendarSectionProps) => {
                 }}
                 slotProps={{
                     day: {
-                        isActive: userInfo.active
+                        active: userInfo.active ? "true" : ""
                     } as any
                 }}
             />

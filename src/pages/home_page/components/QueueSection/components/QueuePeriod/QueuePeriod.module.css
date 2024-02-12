@@ -1,0 +1,32 @@
+.queuePeriod{
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    position: relative;
+    padding: 5px 0;
+}
+
+.dateLabel{
+    text-transform: capitalize;
+    background: var(--background);
+    border-radius: 20px;
+    align-self: center;
+    padding: 5px 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.dateLabelActive{
+    background: var(--primary-blue);
+    color: white;
+}
+
+.queueUsers{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

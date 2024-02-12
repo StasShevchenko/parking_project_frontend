@@ -8,6 +8,7 @@ import {UserApi} from "../../data/user.api.ts";
 import {useApi} from "../../hooks/useApi.ts";
 import {useQuery} from "@tanstack/react-query";
 import {useUser} from "../../hooks/useUser.ts";
+import QueueSection from "./components/QueueSection/QueueSection.tsx";
 
 const HomePage = () => {
 
@@ -24,7 +25,7 @@ const HomePage = () => {
     const [isFirstLoad, setIsFirstLoad] = useState(true)
     useEffect(() => {
         if (user.data) {
-            if(!user.data.queueUser) {
+            if (!user.data.queueUser) {
                 setTabIndex(1)
             }
             setIsFirstLoad(false);
@@ -43,15 +44,16 @@ const HomePage = () => {
                             <div className={styles.pageContent}>
                                 {tabIndex === 0 ?
                                     <CalendarSection userInfo={user.data!}/> :
-                                    <div>1</div>
+                                    <QueueSection/>
                                 }
                             </div>
                         </>
                     ) :
                     <div className={styles.desktopPageContent}>
                         {user.data?.queueUser &&
-                            <CalendarSection userInfo={user.data!}/>
+                            <div className={styles.calendarSection}><CalendarSection userInfo={user.data!}/></div>
                         }
+                        <div className={styles.queueSection}><QueueSection/></div>
                     </div>}
             </div>
         </PageStateWrapper>
