@@ -50,3 +50,16 @@
     justify-content: flex-end;
     color: var(--primary-blue);
 }
+
+.userCard{
+    background: var(--primary-blue);
+    color: var(--primary-white);
+}
+
+.userCard .nameSection{
+    color: var(--primary-white);
+}
+
+.userCard .email{
+    color: var(--primary-white);
+}

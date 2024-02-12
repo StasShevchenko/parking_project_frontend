@@ -34,7 +34,10 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
         <CardActionArea
             onClick={() => onClick?.(user.id)}
             style={{borderRadius: "var(--card-radius)"}}>
-            <Card className={styles.card + " " + (user.fromNextPeriod ? styles.cardPale : '')}>
+            <Card className={styles.card + " " +
+                (user.fromNextPeriod? styles.cardPale : '') +
+                " " + (userInfo.data!.id === user.id && !user.fromNextPeriod ? styles.userCard : '')
+            }>
                 <div className={styles.cardContent}>
                     <div className={styles.nameSectionContainer}>
                         <div className={styles.nameSection}>
