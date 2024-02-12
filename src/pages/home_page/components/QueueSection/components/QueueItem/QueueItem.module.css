@@ -6,6 +6,16 @@
     flex-direction: column;
 }
 
+.cardPale{
+    opacity: 0.7;
+}
+
+.swapButton{
+    color: var(--primary-blue);
+    height: 40px;
+    width: 40px;
+}
+
 .cardContent{
     flex: 1;
     display: flex;
@@ -13,6 +23,11 @@
     justify-content: space-between;
     align-items: stretch;
     gap: 8px;
+}
+
+.nameSectionContainer{
+    display: flex;
+    justify-content: space-between;
 }
 
 .nameSection{

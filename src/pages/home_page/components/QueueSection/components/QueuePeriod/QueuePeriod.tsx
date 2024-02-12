@@ -6,10 +6,11 @@ import {useNavigate} from "react-router-dom";
 
 export interface QueuePeriodProps {
     date: string,
-    users: UserInPeriodDto[]
+    users: UserInPeriodDto[],
+    indexCycle: number
 }
 
-const QueuePeriod = ({date, users}: QueuePeriodProps) => {
+const QueuePeriod = ({date, users, indexCycle}: QueuePeriodProps) => {
     const navigate = useNavigate()
 
     const dateFormatted = dayjs(date).format('MMMM YYYY')
@@ -24,6 +25,9 @@ const QueuePeriod = ({date, users}: QueuePeriodProps) => {
             </div>
             <div className={styles.queueUsers}>
                 {users.map(user => <QueueItem
+                    key={`${user.email} ${date}`}
+                    startDate={date}
+                    indexCycle={indexCycle}
                     user={user}
                     onClick={(userId) => navigate(`/users_list/${userId}`)}
                 />)}

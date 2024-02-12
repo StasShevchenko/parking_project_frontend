@@ -39,7 +39,7 @@ const CalendarSection = ({userInfo}: CalendarSectionProps) => {
             <div className={styles.calendarWrapper}>
                 {(!userInfo.active) && <div className={styles.blurContainer}>
                     <div className={styles.accessLabel}>
-                        До вашей очереди осталось: {dayjs().diff(dayjs(userInfo.startDate), 'days')} дней
+                        Дней до вашей очереди: {-dayjs().diff(dayjs(userInfo.startActiveTime), 'days')}
                     </div>
                 </div>}
                 <DateCalendar

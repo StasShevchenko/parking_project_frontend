@@ -8,6 +8,7 @@ import IconTextField from "../../../../components/IconInput/IconTextField.tsx";
 import {Search} from "@mui/icons-material";
 import QueuePeriod from "./components/QueuePeriod/QueuePeriod.tsx";
 import PageLoader from "../../../../components/PageLoader/PageLoader.tsx";
+import {Divider} from "@mui/material";
 
 const QueueSection = () => {
     const [fullName, setFullName] = useState('')
@@ -31,17 +32,24 @@ const QueueSection = () => {
             </div>
             <div className={styles.periodsList}>
                 {queue.isPending && <PageLoader/>}
-                {!queue.isPending && queue.data?.[0].length === 0 && <div className="empty-message">Пользователи не найдены :(</div>}
-                {!queue.isPending && queue.data?.map((queueCycle) =>
-                queueCycle.map(
-                    (period) =>
-                        <div className={styles.period}><QueuePeriod
-                            key={period.startTime}
-                            date={period.startTime}
-                            users={period.nextUsers}
-                        /></div>
-                )
-            )}
+                {!queue.isPending && queue.data?.[0].length === 0 &&
+                    <div className="empty-message">Пользователи не найдены :(</div>}
+                {!queue.isPending && queue.data?.map((queueCycle, index) =>
+                    <div key={index}>
+                        {index !== 0 && <Divider style={{margin: "20px 0"}}>Новый цикл</Divider>}
+                        {queueCycle.map(
+                            (period) =>
+                                <div
+                                    key={period.startTime}>
+                                    <QueuePeriod
+                                        indexCycle={index}
+                                        date={period.startTime}
+                                        users={period.nextUsers}
+                                    />
+                                </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

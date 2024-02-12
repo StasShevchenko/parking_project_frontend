@@ -5,9 +5,9 @@ export interface UserInfoDto{
     firstName: string
     secondName: string
     id: number
-    startDate: string
-    endDate: string
-    lastActiveDate: string
+    startActiveTime: string
+    endActiveTime: string
+    lastActivePeriod: string
     isSuperAdmin: boolean
     isAdmin: boolean
     active: boolean
