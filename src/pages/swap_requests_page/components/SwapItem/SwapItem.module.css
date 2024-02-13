@@ -37,3 +37,7 @@
     color: var(--primary-blue);
     font-weight: bold;
 }
+
+.buttons{
+    display: flex;
+}

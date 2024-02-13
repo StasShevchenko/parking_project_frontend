@@ -1,7 +1,8 @@
 import styles from './SwapItem.module.css'
 import {SwapResponseDto} from "../../../../data/dto/swapResponse.dto.ts";
 import dayjs from "dayjs";
-import {Card} from "@mui/material";
+import {Card, IconButton} from "@mui/material";
+import {CheckCircle, DoDisturbAltSharp} from "@mui/icons-material";
 
 export interface SwapItemProps{
     swapInfo: SwapResponseDto
@@ -34,14 +35,19 @@ const SwapItem = ({swapInfo, showReceiver = true, showSender = true}: SwapItemPr
                     {`Обмен: с ${dayjs(swapInfo.swapInfo.from).format(dateFormatString)}
                  (${swapInfo.sender.fullName}) на ${dayjs(swapInfo.swapInfo.to).format(dateFormatString)} (${swapInfo.receiver.fullName})`}
                 </div>
-                {swapInfo.isActive && <div className={styles.status}>
-                    Активно
-                </div>}
                 {!swapInfo.isActive && swapInfo.result && <div className={styles.status}>
                     Подтверждено
                 </div>}
                 {!swapInfo.isActive && !swapInfo.result && <div className={styles.status}>
                     Отклонено
+                </div>}
+                {swapInfo.isActive && <div className={styles.buttons}>
+                <IconButton sx={{color: 'lightgreen'}}>
+                    <CheckCircle color="inherit"/>
+                </IconButton>
+                    <IconButton sx={{color: '#e02424'}}>
+                        <DoDisturbAltSharp color="inherit"/>
+                    </IconButton>
                 </div>}
             </Card>
     );
