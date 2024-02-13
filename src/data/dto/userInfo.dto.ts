@@ -5,12 +5,12 @@ export interface UserInfoDto{
     firstName: string
     secondName: string
     id: number
-    startDate: Date
-    endDate: Date
-    lastActiveDate: Date
+    startActiveTime: string
+    endActiveTime: string
+    lastActivePeriod: string
     isSuperAdmin: boolean
     isAdmin: boolean
-    isActive: boolean
+    active: boolean
     queueUser: boolean
     avatar: string
     swapId: number

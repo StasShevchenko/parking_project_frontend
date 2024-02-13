@@ -10,7 +10,7 @@ const UserAvatar = ({avatarPath, className, onClick}: UserAvatarProps) => {
     return (
         <div onClick={() => onClick?.()} className={styles.avatarWrapper + " " + (className ?? '')}>
             {avatarPath ?
-                <img src={`http://localhost:3000/static/${avatarPath}`}/> :
+                <img src={`${import.meta.env.VITE_BASE_URL}/static/${avatarPath}`}/> :
                 <AccountCircleSharp className={styles.avatar}/>}
         </div>
     );

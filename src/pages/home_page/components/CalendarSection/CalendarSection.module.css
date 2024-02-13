@@ -1,0 +1,58 @@
+.calendarContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.legendContainer{
+    display: flex;
+    gap: 10px;
+    color: var(--secondary-blue);
+    align-items: center;
+}
+
+.legendMark{
+    height: 25px;
+    width: 25px;
+    border-radius: 10px;
+    background: var(--primary-accent-red);
+}
+
+.calendarWrapper{
+    padding: 5px;
+    background: white;
+    border-radius: 20px;
+    width: min-content;
+    height: min-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.blurContainer{
+    border-radius: 20px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+.accessLabel{
+    position: absolute;
+    border-radius: 20px;
+    width: 90%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: 1px lightgray solid;
+    text-align: center;
+    background: white;
+    font-weight: bold;
+}

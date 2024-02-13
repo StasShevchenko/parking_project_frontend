@@ -10,6 +10,7 @@ export interface User{
     secondName: string
     changedPassword: boolean
     avatar?: string
+    active: boolean
     [key: string]: boolean | number | string | undefined
 }
 

@@ -1,0 +1,40 @@
+.pageWrapper{
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pageContent{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    padding-top: 10px;
+}
+
+.pageContent ::-webkit-scrollbar{
+    display: none;
+}
+
+.desktopPageContent{
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    overflow: auto;
+    padding: 10px 20px;
+}
+
+.desktopPageContent ::-webkit-scrollbar{
+    display: none;
+}
+
+.calendarSection{
+    flex: 2;
+}
+
+.queueSection{
+    flex: 3;
+}
