@@ -1,0 +1,17 @@
+.swapRequestWrapper{
+    max-width: 300px;
+    color: var(--secondary-blue);
+}
+
+.buttonsSection{
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+@media (max-width: 760px) {
+    .buttonsSection{
+        flex-direction: column;
+    }
+}

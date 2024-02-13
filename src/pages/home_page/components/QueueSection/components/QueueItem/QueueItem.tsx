@@ -8,6 +8,8 @@ import {useApi} from "../../../../../../hooks/useApi.ts";
 import {useUser} from "../../../../../../hooks/useUser.ts";
 import {UserInfoDto} from "../../../../../../data/dto/userInfo.dto.ts";
 import {SwapHoriz} from "@mui/icons-material";
+import {useState} from "react";
+import SendSwapRequestDialog from "../SendSwapRequestDialog/SendSwapRequestDialog.tsx";
 
 export interface QueueItemProps {
     user: UserInPeriodDto
@@ -16,6 +18,8 @@ export interface QueueItemProps {
 }
 
 const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
+    const [showSendSwapRequestDialog, setShowSendSwapRequestDialog] = useState(false)
+
     const me = useUser()
     const userApi = useApi(UserApi)
     const userInfo = useQuery({
@@ -35,7 +39,7 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
             onClick={() => onClick?.(user.id)}
             style={{borderRadius: "var(--card-radius)"}}>
             <Card className={styles.card + " " +
-                (user.fromNextPeriod? styles.cardPale : '') +
+                (user.fromNextPeriod ? styles.cardPale : '') +
                 " " + (userInfo.data!.id === user.id && !user.fromNextPeriod ? styles.userCard : '')
             }>
                 <div className={styles.cardContent}>
@@ -50,6 +54,7 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
                                 onMouseDown={(e) => e.stopPropagation()}
                                 onClick={(event) => {
                                     event.stopPropagation()
+                                    setShowSendSwapRequestDialog(true)
                                 }}>
                                 <SwapHoriz/>
                             </IconButton>
@@ -58,6 +63,14 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
                     <div className={styles.email}>{user.email}</div>
                 </div>
             </Card>
+            {showSendSwapRequestDialog &&
+                <SendSwapRequestDialog
+                    swapDate={startDate}
+                    sender={userInfo.data!}
+                    receiver={user}
+                    onClose={() => setShowSendSwapRequestDialog(false)}
+                />
+            }
         </CardActionArea>
     );
 };

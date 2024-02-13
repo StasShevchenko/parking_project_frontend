@@ -10,7 +10,13 @@ const AlertDialog = ({onClose, children, title}: AlertDialogProps) => {
     return (
         <Dialog
             open={true}
-            onClose={() => onClose()}
+            onMouseDown={(event) => {
+                event.stopPropagation()
+            }}
+            onClose={(event) => {
+                (event as MouseEvent).stopPropagation()
+                onClose()
+            }}
             PaperProps={{
                 sx: {
                     borderRadius: "20px",
