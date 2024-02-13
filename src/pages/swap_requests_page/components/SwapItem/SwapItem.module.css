@@ -1,0 +1,37 @@
+.itemWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+    padding: 15px;
+    border-radius: var(--card-radius);
+    position: relative;
+}
+
+.indicator{
+    height: 12px;
+    width: 12px;
+    border-radius: 100px;
+    background: var(--primary-blue);
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    box-shadow: var(--primary-blue) 0 0 6px;
+}
+
+.indicator-positive{
+    background: lightgreen;
+}
+
+.indicator-negative{
+    background: #e02424;
+}
+
+.textBlock{
+    color: var(--secondary-blue);
+}
+
+.status{
+    color: var(--primary-blue);
+    font-weight: bold;
+}

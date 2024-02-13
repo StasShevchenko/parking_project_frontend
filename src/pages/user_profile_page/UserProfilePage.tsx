@@ -26,7 +26,7 @@ const UserProfilePage = () => {
     }
     return (
         <div className={styles.pageWrapper}>
-            <div className={styles.title}>
+            <div className="title">
                 Личный кабинет
             </div>
             <div className={styles.userInfo}>

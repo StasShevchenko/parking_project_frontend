@@ -1,0 +1,31 @@
+.pageWrapper{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    max-height: 100%;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 300px;
+}
+
+.title{
+    color: var(--secondary-blue);
+    font-size: 16px;
+}
+
+.swapsList ::-webkit-scrollbar{
+    display: none;
+}
+
+.swapsList{
+    overflow: auto;
+    max-width: 500px;
+    padding: 10px;
+}
