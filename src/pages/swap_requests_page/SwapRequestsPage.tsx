@@ -18,8 +18,8 @@ const SwapRequestsPage = () => {
         queryKey: [SwapApi.getSwapRequestsKey, currentUser.id]
     })
 
-    const incomingRequests = swapRequests.data!.filter((item) => item.sender.id !== currentUser.id)
-    const outgoingRequests = swapRequests.data!.filter((item) => item.sender.id === currentUser.id)
+    const incomingRequests = swapRequests.data?.filter((item) => item.sender.id !== currentUser.id)
+    const outgoingRequests = swapRequests.data?.filter((item) => item.sender.id === currentUser.id)
     const [isFirstLoad, setIsFirstLoad] = useState(true)
     useEffect(() => {
         if (swapRequests.data) {
@@ -70,23 +70,23 @@ const SwapRequestsPage = () => {
                             {swapRequests.isPending && <PageLoader/>}
                             {!swapRequests.isPending &&
                                 toggleValue === 'incoming' &&
-                                incomingRequests.length === 0 &&
+                                incomingRequests!.length === 0 &&
                                 <div className="empty-message">Запросы не найдены :(</div>
                             }
                             {!swapRequests.isPending &&
                                 toggleValue === 'incoming' &&
-                                incomingRequests.map(
+                                incomingRequests!.map(
                                     (swap) => <SwapItem showReceiver={false} swapInfo={swap}/>
                                 )}
 
                             {!swapRequests.isPending &&
                                 toggleValue === 'outgoing' &&
-                                outgoingRequests.length === 0 &&
+                                outgoingRequests!.length === 0 &&
                                 <div className="empty-message">Запросы не найдены :(</div>
                             }
                             {!swapRequests.isPending &&
                                 toggleValue === 'outgoing' &&
-                                outgoingRequests.map(
+                                outgoingRequests!.map(
                                     (swap) => <SwapItem showSender={false} swapInfo={swap}/>
                                 )}
                         </div>
