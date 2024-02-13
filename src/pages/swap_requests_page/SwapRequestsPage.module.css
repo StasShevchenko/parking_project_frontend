@@ -5,7 +5,7 @@
     max-height: 100%;
     align-items: center;
     flex-direction: column;
-    gap: 30px;
+    gap: 40px;
 }
 
 .content{
@@ -15,6 +15,11 @@
     min-width: 300px;
 }
 
+.toggle{
+    display: flex;
+    align-self: stretch;
+    padding: 0 10px;
+}
 .title{
     color: var(--secondary-blue);
     font-size: 16px;
@@ -26,6 +31,7 @@
 
 .swapsList{
     overflow: auto;
+    width: 500px;
     max-width: 500px;
     padding: 10px;
 }

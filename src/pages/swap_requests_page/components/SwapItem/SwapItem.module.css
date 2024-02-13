@@ -21,10 +21,12 @@
 
 .indicator-positive{
     background: lightgreen;
+    box-shadow: lightgreen 0 0 6px;
 }
 
 .indicator-negative{
     background: #e02424;
+    box-shadow: #e02424 0 0 6px;
 }
 
 .textBlock{

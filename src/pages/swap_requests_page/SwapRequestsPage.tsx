@@ -7,8 +7,10 @@ import {useQuery} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import PageLoader from '../../components/PageLoader/PageLoader.tsx';
 import SwapItem from "./components/SwapItem/SwapItem.tsx";
+import {ToggleButton, ToggleButtonGroup} from "@mui/material";
 
 const SwapRequestsPage = () => {
+    const [toggleValue, setToggleValue] = useState('incoming')
     const currentUser = useUser()
     const swapApi = useApi(SwapApi)
     const swapRequests = useQuery({
@@ -16,6 +18,8 @@ const SwapRequestsPage = () => {
         queryKey: [SwapApi.getSwapRequestsKey, currentUser.id]
     })
 
+    const incomingRequests = swapRequests.data!.filter((item) => item.sender.id !== currentUser.id)
+    const outgoingRequests = swapRequests.data!.filter((item) => item.sender.id === currentUser.id)
     const [isFirstLoad, setIsFirstLoad] = useState(true)
     useEffect(() => {
         if (swapRequests.data) {
@@ -28,12 +32,64 @@ const SwapRequestsPage = () => {
             <div className={styles.pageWrapper}>
                 <div className="title">Запросы на обмен</div>
                 <div className={styles.content}>
-                    <div className={styles.swapsList}>
-                        {swapRequests.isPending && <PageLoader/>}
-                        {!swapRequests.isPending &&
-                            swapRequests.data!.map(
-                                (swap) => <SwapItem swapInfo={swap}/>
-                            )}
+                    <ToggleButtonGroup
+                        sx={{
+                            height: '40px !important'
+                        }}
+                        className={styles.toggle}
+                        color="primary"
+                        value={toggleValue}
+                        exclusive
+                        onChange={(_, value) => {
+                            if (value) {
+                                setToggleValue(value)
+                            }
+                        }}
+                    >
+                        <ToggleButton
+                            sx={{
+                                borderTopLeftRadius: '20px !important',
+                                borderBottomLeftRadius: '20px !important'
+                            }}
+                            value='incoming'
+                        >
+                            Входящие
+                        </ToggleButton>
+                        <ToggleButton
+                            sx={{
+                                borderTopRightRadius: '20px !important',
+                                borderBottomRightRadius: '20px !important'
+                            }}
+                            value='outgoing'
+                        >
+                            Исходящие
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                    <div className={styles.content}>
+                        <div className={styles.swapsList}>
+                            {swapRequests.isPending && <PageLoader/>}
+                            {!swapRequests.isPending &&
+                                toggleValue === 'incoming' &&
+                                incomingRequests.length === 0 &&
+                                <div className="empty-message">Запросы не найдены :(</div>
+                            }
+                            {!swapRequests.isPending &&
+                                toggleValue === 'incoming' &&
+                                incomingRequests.map(
+                                    (swap) => <SwapItem showReceiver={false} swapInfo={swap}/>
+                                )}
+
+                            {!swapRequests.isPending &&
+                                toggleValue === 'outgoing' &&
+                                outgoingRequests.length === 0 &&
+                                <div className="empty-message">Запросы не найдены :(</div>
+                            }
+                            {!swapRequests.isPending &&
+                                toggleValue === 'outgoing' &&
+                                outgoingRequests.map(
+                                    (swap) => <SwapItem showSender={false} swapInfo={swap}/>
+                                )}
+                        </div>
                     </div>
                 </div>
             </div>
