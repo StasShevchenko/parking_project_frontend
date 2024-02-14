@@ -45,7 +45,8 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
                 <div className={styles.cardContent}>
                     <div className={styles.nameSectionContainer}>
                         <div className={styles.nameSection}>
-                            <UserAvatar avatarPath={user.avatar}/>
+                            <UserAvatar avatarPath={user.avatar}
+                                        negative={(userInfo.data!.id === user.id && !user.fromNextPeriod)}/>
                             {`${user.firstName} ${user.secondName}`}
                         </div>
                         {isSwapAvailable(user, userInfo.data) &&

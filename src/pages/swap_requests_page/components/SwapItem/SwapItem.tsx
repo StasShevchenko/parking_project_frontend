@@ -3,6 +3,9 @@ import {SwapResponseDto} from "../../../../data/dto/swapResponse.dto.ts";
 import dayjs from "dayjs";
 import {Card, IconButton} from "@mui/material";
 import {CheckCircle, DoDisturbAltSharp} from "@mui/icons-material";
+import {useState} from "react";
+import ConfirmDialog from "../../../../components/ConfirmDialog/ConfirmDialog.tsx";
+import {useUser} from "../../../../hooks/useUser.ts";
 
 export interface SwapItemProps{
     swapInfo: SwapResponseDto
@@ -10,6 +13,10 @@ export interface SwapItemProps{
     showReceiver?: boolean
 }
 const SwapItem = ({swapInfo, showReceiver = true, showSender = true}: SwapItemProps) => {
+    const [showAcceptSwapDialog, setShowAcceptSwapDialog] = useState(false)
+    const [showDeclineSwapDialog, setShowDeclineSwapDialog] = useState(false)
+    const currentUser = useUser()
+
     const dateFormatString = 'DD.MM.YYYY'
     let indicatorColorClass = ''
     if (!swapInfo.isActive) {
@@ -41,14 +48,20 @@ const SwapItem = ({swapInfo, showReceiver = true, showSender = true}: SwapItemPr
                 {!swapInfo.isActive && !swapInfo.result && <div className={styles.status}>
                     Отклонено
                 </div>}
-                {swapInfo.isActive && <div className={styles.buttons}>
-                <IconButton sx={{color: 'lightgreen'}}>
+                {swapInfo.isActive && swapInfo.receiver.id === currentUser.id && <div className={styles.buttons}>
+                <IconButton onClick={() => setShowAcceptSwapDialog(true)} sx={{color: 'lightgreen'}}>
                     <CheckCircle color="inherit"/>
                 </IconButton>
-                    <IconButton sx={{color: '#e02424'}}>
+                    <IconButton onClick={() => setShowDeclineSwapDialog(true)} sx={{color: '#e02424'}}>
                         <DoDisturbAltSharp color="inherit"/>
                     </IconButton>
                 </div>}
+                {showAcceptSwapDialog &&
+                    <ConfirmDialog text="Принять запрос на обмен?" onConfirm={() => {}} onClose={() => setShowAcceptSwapDialog(false)}/>
+                }
+                {showDeclineSwapDialog &&
+                    <ConfirmDialog text="Отклонить запрос на обмен?" onConfirm={() => {}} onClose={() => setShowDeclineSwapDialog(false)}/>
+                }
             </Card>
     );
 };
