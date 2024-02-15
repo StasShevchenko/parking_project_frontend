@@ -1,0 +1,21 @@
+.swapLabelWrapper{
+    padding: 4px 8px;
+    display: flex;
+    gap: 10px;
+    border-radius: 20px;
+    align-items: center;
+    color: var(--primary-white);
+    background: var(--primary-blue);
+}
+
+.swapLabelOnPrimary{
+    color: var(--primary-blue);
+    background: var(--primary-white);
+}
+
+.swapInfoContent{
+    color: var(--secondary-blue);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

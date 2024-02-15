@@ -1,4 +1,4 @@
-import {SwapResponseDto} from "./swapResponse.dto.ts";
+import {SwapDto} from "./swap.dto.ts";
 
 export interface UserInPeriodDto{
     id: number
@@ -8,6 +8,6 @@ export interface UserInPeriodDto{
     active: boolean
     avatar: string
     swap?: number
-    swapInfo?: SwapResponseDto
+    swapInfo?: SwapDto
     fromNextPeriod?: boolean
 }

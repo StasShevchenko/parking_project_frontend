@@ -10,6 +10,7 @@ import {UserInfoDto} from "../../../../../../data/dto/userInfo.dto.ts";
 import {SwapHoriz} from "@mui/icons-material";
 import {useState} from "react";
 import SendSwapRequestDialog from "../SendSwapRequestDialog/SendSwapRequestDialog.tsx";
+import SwapInfoLabel from "../SwapInfoLabel/SwapInfoLabel.tsx";
 
 export interface QueueItemProps {
     user: UserInPeriodDto
@@ -36,6 +37,7 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
 
     return (
         <CardActionArea
+            component="span"
             onClick={() => onClick?.(user.id)}
             style={{borderRadius: "var(--card-radius)"}}>
             <Card className={styles.card + " " +
@@ -46,7 +48,7 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
                     <div className={styles.nameSectionContainer}>
                         <div className={styles.nameSection}>
                             <UserAvatar avatarPath={user.avatar}
-                                        negative={(userInfo.data!.id === user.id && !user.fromNextPeriod)}/>
+                                        isOnPrimary={(userInfo.data!.id === user.id && !user.fromNextPeriod)}/>
                             {`${user.firstName} ${user.secondName}`}
                         </div>
                         {isSwapAvailable(user, userInfo.data) &&
@@ -61,7 +63,14 @@ const QueueItem = ({user, onClick, startDate}: QueueItemProps) => {
                             </IconButton>
                         }
                     </div>
-                    <div className={styles.email}>{user.email}</div>
+                    <div className={styles.swapInfoContainer}>
+                        {user.swapInfo &&
+                            <SwapInfoLabel
+                                isOnPrimary={(userInfo.data!.id === user.id && !user.fromNextPeriod)}
+                                swapInfo={user.swapInfo}
+                            />}
+                        <div className={styles.email}>{user.email}</div>
+                    </div>
                 </div>
             </Card>
             {showSendSwapRequestDialog &&

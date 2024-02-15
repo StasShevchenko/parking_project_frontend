@@ -44,9 +44,16 @@
     color: var(--primary-blue);
 }
 
+.swapInfoContainer{
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .email{
     display: flex;
-    margin-top: 8px;
+    flex: 1;
     justify-content: flex-end;
     color: var(--primary-blue);
 }
