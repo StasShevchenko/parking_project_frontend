@@ -38,6 +38,15 @@
     font-weight: bold;
 }
 
+.loader{
+    color: var(--primary-blue);
+    height: 24px !important;
+    width: 24px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .buttons{
     display: flex;
+    align-items: center;
 }
