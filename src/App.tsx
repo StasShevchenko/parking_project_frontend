@@ -24,6 +24,7 @@ import { ruRU } from '@mui/x-date-pickers/locales';
 import 'dayjs/locale/ru.js'
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"
+import ResetPasswordPage from "./pages/reset_password_page/ResetPasswordPage.tsx";
 
 dayjs.locale('ru')
 dayjs.extend(utc)
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
             <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/reset_password" element={<ResetPasswordPage/>}/>
             <Route element={
                 <ProtectedRoute>
                     <Root/>

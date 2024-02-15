@@ -11,7 +11,7 @@ import {useMutation} from "@tanstack/react-query";
 import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
 import {LoginUserDto} from "../../data/dto/loginUser.dto.ts";
 import {jwtDecode} from "jwt-decode";
-import {Navigate, useNavigate} from "react-router-dom";
+import {Navigate, NavLink, useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
 
 const LoginPage = () => {
@@ -116,6 +116,7 @@ const LoginPage = () => {
                                 </IconButton>
                             }
                         />
+                        <NavLink className={styles.forgotPassword} to={'/reset_password'}>Забыли пароль?</NavLink>
                         {!!formError && <div className={styles.errorMessage}>{formError}</div>}
                         <LoadingButton
                             onClick={() => login()}
