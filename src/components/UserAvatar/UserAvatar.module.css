@@ -11,3 +11,7 @@
     width: 100%;
     color: var(--primary-blue);
 }
+
+.avatarNegative{
+    color: var(--primary-white);
+}

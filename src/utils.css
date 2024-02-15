@@ -6,3 +6,9 @@
     justify-content: center;
     color: var(--primary-blue);
 }
+
+.title{
+    color: var(--secondary-blue);
+    font-size: 24px;
+    text-align: center;
+}

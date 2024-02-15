@@ -23,8 +23,10 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import { ruRU } from '@mui/x-date-pickers/locales';
 import 'dayjs/locale/ru.js'
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"
 
 dayjs.locale('ru')
+dayjs.extend(utc)
 
 const router = createBrowserRouter(
     createRoutesFromElements(
