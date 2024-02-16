@@ -5,10 +5,11 @@ import {TokensDto} from "../dto/tokens.dto.ts";
 
 export class AxiosClient {
     private static instance?: AxiosClient
-    private accessToken: string = ''
+    private accessToken: string | null = localStorage.getItem('accessToken')
 
     private client = axios.create({
         baseURL: import.meta.env.VITE_BASE_URL,
+        withCredentials: true
     })
 
     private constructor(authContext: AuthContextType) {
@@ -26,15 +27,12 @@ export class AxiosClient {
                 const originalRequest = error.config
                 if (error.response.status === 401 && !originalRequest.retry) {
                     originalRequest.retry = true
-                    const currentRefreshToken = window.localStorage.getItem('refreshToken')
-                    if (currentRefreshToken != null) {
-                        window.localStorage.removeItem('refreshToken')
+                    const currentAccessToken = window.localStorage.getItem('accessToken')
+                    if (currentAccessToken != null) {
+                        window.localStorage.removeItem('accessToken')
                         let refreshData
                         try {
-                            refreshData = await this.client.post<TokensDto>('/token/refresh',
-                                {
-                                    refresh: currentRefreshToken
-                                });
+                            refreshData = await this.client.post<TokensDto>('/token/refresh');
                         } catch (error) {
                             window.localStorage.removeItem('refreshToken')
                             authContext.setAuthState({
@@ -44,7 +42,7 @@ export class AxiosClient {
                             return Promise.reject(error)
                         }
                         const {data} = refreshData;
-                        window.localStorage.setItem('refreshToken', data.refreshToken)
+                        window.localStorage.setItem('accessToken', data.accessToken)
                         this.client.defaults.headers['Authorization'] = `Bearer ${data.accessToken}`
                         originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
                         this.accessToken = data.accessToken
