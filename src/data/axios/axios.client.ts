@@ -27,31 +27,26 @@ export class AxiosClient {
                 const originalRequest = error.config
                 if (error.response.status === 401 && !originalRequest.retry) {
                     originalRequest.retry = true
-                    const currentAccessToken = window.localStorage.getItem('accessToken')
-                    if (currentAccessToken != null) {
-                        window.localStorage.removeItem('accessToken')
-                        let refreshData
-                        try {
-                            refreshData = await this.client.post<TokensDto>('/token/refresh');
-                        } catch (error) {
-                            window.localStorage.removeItem('refreshToken')
-                            authContext.setAuthState({
-                                ...authContext.authState,
-                                isAuthenticated: 'false'
-                            })
-                            return Promise.reject(error)
-                        }
-                        const {data} = refreshData;
-                        window.localStorage.setItem('accessToken', data.accessToken)
-                        this.client.defaults.headers['Authorization'] = `Bearer ${data.accessToken}`
-                        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
-                        this.accessToken = data.accessToken
-                        return this.client(originalRequest)
-                    } else {
+                    window.localStorage.removeItem('accessToken')
+                    let refreshData
+                    try {
+                        refreshData = await this.client.post<TokensDto>('/token/refresh');
+                    } catch (error) {
+                        window.localStorage.removeItem('refreshToken')
+                        authContext.setAuthState({
+                            ...authContext.authState,
+                            isAuthenticated: 'false'
+                        })
                         return Promise.reject(error)
                     }
+                    const {data} = refreshData;
+                    window.localStorage.setItem('accessToken', data.accessToken)
+                    this.client.defaults.headers['Authorization'] = `Bearer ${data.accessToken}`
+                    originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
+                    this.accessToken = data.accessToken
+                    return this.client(originalRequest)
                 } else {
-                    return Promise.reject(error);
+                    return Promise.reject(error)
                 }
             }
         )

@@ -18,7 +18,7 @@ const UserProfilePage = () => {
     const [showChangeAvatarDialog, setShowChangeAvatarDialog] = useState(false)
     const logout = () => {
         authApi.logout()
-        window.localStorage.removeItem('refreshToken')
+        window.localStorage.removeItem('accessToken')
         setAuthState({
             ...authState,
             isAuthenticated: "false"
