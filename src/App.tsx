@@ -67,7 +67,7 @@ const queryClient = new QueryClient({
 
 const App = () => {
 
-    const jwtString = window.localStorage.getItem('refreshToken')
+    const jwtString = window.localStorage.getItem('accessToken')
     let jwt
     if (jwtString) {
         jwt = jwtDecode<{ user: User }>(jwtString)
@@ -81,10 +81,11 @@ const App = () => {
         setAuthState: setAuthState,
         updateUser: async () => {
             const authApi = new AuthApi(axios.create({
-                baseURL: import.meta.env.VITE_BASE_URL
+                baseURL: import.meta.env.VITE_BASE_URL,
+                withCredentials: true
             }))
-            const refresh = await authApi.getNewRefresh()
-            const jwt = jwtDecode<{ user: User }>(refresh)
+            const access = await authApi.getNewToken()
+            const jwt = jwtDecode<{ user: User }>(access)
             setAuthState({
                 ...authState,
                 user: jwt.user

@@ -59,7 +59,7 @@ const LoginPage = () => {
             return authApi.login(email, password)
         },
         onSuccess: (data) => {
-            window.localStorage.setItem('refreshToken', data.refreshToken)
+            console.log(data)
             const jwt = jwtDecode<{user: User}>(data.accessToken)
             const user: User = jwt.user
             setAuthState(
