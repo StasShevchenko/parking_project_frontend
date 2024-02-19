@@ -8,7 +8,7 @@ import styles from './UserPage.module.css'
 import UserAvatar from "../../components/UserAvatar/UserAvatar.tsx";
 import {getUserRolesString} from "../../data/dto/userInfo.dto.ts";
 import LoadingButton from "../../components/LoadingButton/LoadingButton.tsx";
-import {IconButton} from "@mui/material";
+import {Alert, IconButton} from "@mui/material";
 import {ArrowBackIos} from "@mui/icons-material";
 import {useUser} from "../../hooks/useUser.ts";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.tsx";
@@ -31,8 +31,9 @@ const UserPage = () => {
                 isAdmin: isAdmin
             }
         ),
-        onSuccess: () => {
-            client.invalidateQueries({queryKey: [UserApi.getUserByIdKey, UserApi.getAllUsersKey]})
+        onSuccess: async () => {
+            client.invalidateQueries({queryKey: [UserApi.getUserByIdKey]})
+            client.invalidateQueries({queryKey: [UserApi.getAllUsersKey]})
         }
     })
 
@@ -88,7 +89,14 @@ const UserPage = () => {
                                 {user.data?.isAdmin ? 'Убрать' : 'Добавить'} роль администратора
                             </LoadingButton>
                         }
+                        {roleMutation.error &&
+                            <Alert variant={"outlined"} severity={"error"}>При отправке данных что-то пошло не так!</Alert>
+                        }
+                        {deleteMutation.error &&
+                            <Alert variant={"outlined"} severity={"error"}>При удалении пользователя что-то пошло не так!</Alert>
+                        }
                     </div>
+
                 </div>
                 {showDeleteDialog && <ConfirmDialog
                     text="Вы действительно хотите удалить пользователя?"
@@ -104,6 +112,7 @@ const UserPage = () => {
                         setShowDeleteDialog(false)
                     }}
                 />}
+
             </div>
         </PageStateWrapper>
     );
