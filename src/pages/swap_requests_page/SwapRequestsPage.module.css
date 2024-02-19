@@ -14,13 +14,16 @@
     gap: 20px;
     min-width: 300px;
     width: 100%;
+    align-items: center;
 }
 
 .toggle{
     display: flex;
-    align-self: stretch;
     padding: 0 10px;
+    width: 100%;
+    max-width: 500px;
 }
+
 .title{
     color: var(--secondary-blue);
     font-size: 16px;
