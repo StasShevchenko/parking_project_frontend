@@ -7,7 +7,7 @@ import styles from './QueueSection.module.css'
 import IconTextField from "../../../../components/IconInput/IconTextField.tsx";
 import {Search} from "@mui/icons-material";
 import QueuePeriod from "./components/QueuePeriod/QueuePeriod.tsx";
-import PageLoader from "../../../../components/PageLoader/PageLoader.tsx";
+import PageStateWrapper from "../../../../components/PageStateWrapper/PageStateWrapper.tsx";
 
 const QueueSection = () => {
     const [fullName, setFullName] = useState('')
@@ -30,23 +30,29 @@ const QueueSection = () => {
                 />
             </div>
             <div className={styles.periodsList}>
-                {queue.isPending && <PageLoader/>}
-                {!queue.isPending && queue.data?.[0].length === 0 &&
-                    <div className="empty-message">Пользователи не найдены :(</div>}
-                {!queue.isPending && queue.data?.map((queueCycle, index) =>
-                    <div key={index}>
-                        {queueCycle.map(
-                            (period) =>
-                                <div
-                                    key={period.startTime}>
-                                    <QueuePeriod
-                                        date={period.startTime}
-                                        users={period.nextUsers}
-                                    />
-                                </div>
-                        )}
-                    </div>
-                )}
+                <PageStateWrapper
+                    isLoading={queue.isPending}
+                    isError={queue.isError}
+                    errorMessage={"При загрузке данных что-то пошло не так!"}
+                    onErrorAction="reload"
+                >
+                    {!queue.isPending && (queue.data?.length === 0 || queue.data?.[0].length === 0) &&
+                        <div className="empty-message">Пользователи не найдены :(</div>}
+                    {!queue.isPending && queue.data?.map((queueCycle, index) =>
+                        <div key={index}>
+                            {queueCycle.map(
+                                (period) =>
+                                    <div
+                                        key={period.startTime}>
+                                        <QueuePeriod
+                                            date={period.startTime}
+                                            users={period.nextUsers}
+                                        />
+                                    </div>
+                            )}
+                        </div>
+                    )}
+                </PageStateWrapper>
             </div>
         </div>
     );
