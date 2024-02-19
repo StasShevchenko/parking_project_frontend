@@ -13,6 +13,7 @@
     flex-direction: column;
     gap: 20px;
     min-width: 300px;
+    width: 100%;
 }
 
 .toggle{
@@ -34,4 +35,7 @@
     width: 100%;
     max-width: 500px;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

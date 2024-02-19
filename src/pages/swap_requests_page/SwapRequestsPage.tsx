@@ -28,7 +28,12 @@ const SwapRequestsPage = () => {
     }, [swapRequests.data])
 
     return (
-        <PageStateWrapper isLoading={isFirstLoad}>
+        <PageStateWrapper
+            isLoading={isFirstLoad}
+            isError={swapRequests.isError}
+            errorMessage={"При загрузке данных что-то пошло не так!"}
+            onErrorAction={"reload"}
+        >
             <div className={styles.pageWrapper}>
                 <div className="title">Запросы на обмен</div>
                 <div className={styles.content}>
