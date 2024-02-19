@@ -57,7 +57,11 @@ const UsersListPage = () => {
 
     return (
         <PageStateWrapper
-            isLoading={isFirstLoad}>
+            isLoading={isFirstLoad}
+            isError={users.isError}
+            errorMessage={"При загрузке данных что-то пошло не так!"}
+            onErrorAction={"reload"}
+        >
             <div className={styles.pageWrapper}>
                 <div className={styles.optionsSection}>
                     <IconTextField
