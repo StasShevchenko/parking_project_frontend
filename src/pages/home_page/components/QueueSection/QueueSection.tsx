@@ -7,7 +7,6 @@ import styles from './QueueSection.module.css'
 import IconTextField from "../../../../components/IconInput/IconTextField.tsx";
 import {Search} from "@mui/icons-material";
 import QueuePeriod from "./components/QueuePeriod/QueuePeriod.tsx";
-import PageLoader from "../../../../components/PageLoader/PageLoader.tsx";
 import PageStateWrapper from "../../../../components/PageStateWrapper/PageStateWrapper.tsx";
 
 const QueueSection = () => {

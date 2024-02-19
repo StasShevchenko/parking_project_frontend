@@ -3,7 +3,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {UserApi} from "../../data/user.api.ts";
 import {useApi} from "../../hooks/useApi.ts";
 import PageStateWrapper from "../../components/PageStateWrapper/PageStateWrapper.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import styles from './UserPage.module.css'
 import UserAvatar from "../../components/UserAvatar/UserAvatar.tsx";
 import {getUserRolesString} from "../../data/dto/userInfo.dto.ts";
@@ -12,6 +12,7 @@ import {IconButton} from "@mui/material";
 import {ArrowBackIos} from "@mui/icons-material";
 import {useUser} from "../../hooks/useUser.ts";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.tsx";
+import {getErrorCode} from "../../utils/getErrorCode.ts";
 
 const UserPage = () => {
     const navigate = useNavigate()
@@ -46,20 +47,14 @@ const UserPage = () => {
         }
     })
 
-    const [isFirstLoad, setIsFirstLoad] = useState(true)
-    useEffect(() => {
-        if (user.data) {
-            setIsFirstLoad(false);
-        }
-    }, [user.data])
-
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     return (
         <PageStateWrapper
-            isLoading={isFirstLoad}
+            isLoading={user.isFetching}
             isError={!!user.error}
-            onErrorAction="navigateBack"
-            errorMessage='Пользователь не найден!'
+            onErrorAction={getErrorCode(user.error) === 400 ?  "navigateBack" : "reload"}
+            errorMessage={getErrorCode(user.error) === 400 ? 'Пользователь не найден!'
+                : 'При загрузке данных что-то пошло не так!'}
         >
             <div className={styles.pageWrapper}>
                 <div className={styles.userTitle}>
