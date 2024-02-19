@@ -34,7 +34,8 @@ const SwapRequestsPage = () => {
                 <div className={styles.content}>
                     <ToggleButtonGroup
                         sx={{
-                            height: '40px !important'
+                            height: '30px !important',
+
                         }}
                         className={styles.toggle}
                         color="primary"
@@ -48,8 +49,13 @@ const SwapRequestsPage = () => {
                     >
                         <ToggleButton
                             sx={{
+                                fontSize: '12px !important',
                                 borderTopLeftRadius: '20px !important',
-                                borderBottomLeftRadius: '20px !important'
+                                borderBottomLeftRadius: '20px !important',
+                                '&.Mui-selected': {
+                                    background: 'var(--primary-blue) !important',
+                                    color: 'var(--primary-white) !important'
+                                }
                             }}
                             value='incoming'
                         >
@@ -57,8 +63,13 @@ const SwapRequestsPage = () => {
                         </ToggleButton>
                         <ToggleButton
                             sx={{
+                                fontSize: '12px !important',
                                 borderTopRightRadius: '20px !important',
-                                borderBottomRightRadius: '20px !important'
+                                borderBottomRightRadius: '20px !important',
+                                '&.Mui-selected': {
+                                    background: 'var(--primary-blue) !important',
+                                    color: 'var(--primary-white) !important'
+                                }
                             }}
                             value='outgoing'
                         >
