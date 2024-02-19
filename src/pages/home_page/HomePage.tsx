@@ -33,7 +33,12 @@ const HomePage = () => {
     }, [user.data])
 
     return (
-        <PageStateWrapper isLoading={isFirstLoad}>
+        <PageStateWrapper
+            isLoading={isFirstLoad || !user.data}
+            isError={user.isError}
+            errorMessage={"При загрузке данных что-то пошло не так!"}
+            onErrorAction={"reload"}
+        >
             <div className={styles.pageWrapper}>
                 {isTablet ? (
                         <>
