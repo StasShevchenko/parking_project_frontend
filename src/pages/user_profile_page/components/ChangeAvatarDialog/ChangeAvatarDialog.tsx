@@ -2,13 +2,13 @@ import styles from './ChangeAvaterDialog.module.css'
 import AlertDialog from "../../../../components/AlertDialog/AlertDialog.tsx";
 import {Button} from '@mui/material';
 import LoadingButton from "../../../../components/LoadingButton/LoadingButton.tsx";
-import PageLoader from "../../../../components/PageLoader/PageLoader.tsx";
 import {useApi} from "../../../../hooks/useApi.ts";
 import {UserApi} from "../../../../data/user.api.ts";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import UserAvatar from "../../../../components/UserAvatar/UserAvatar.tsx";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../../context/auth.context.ts";
+import PageStateWrapper from "../../../../components/PageStateWrapper/PageStateWrapper.tsx";
 
 export interface ChangeAvatarDialogProps {
     onClose: () => void
@@ -50,7 +50,12 @@ const ChangeAvatarDialog = ({onClose}: ChangeAvatarDialogProps) => {
         <AlertDialog onClose={onClose} title="Выбор аватара">
             <div className={styles.contentWrapper}>
                 <div className={styles.avatarsWrapper}>
-                    {avatars.isPending ? <PageLoader/> :
+                    <PageStateWrapper
+                        isLoading={avatars.isPending}
+                        isError={avatars.isError}
+                        errorMessage={"При загрузке данных что-то пошло не так!"}
+                        onErrorAction={"reload"}
+                    >
                         <div className={styles.avatarsGrid}>
                             {avatarsStrings.map((avatar, index) =>
                                 <UserAvatar
@@ -62,7 +67,7 @@ const ChangeAvatarDialog = ({onClose}: ChangeAvatarDialogProps) => {
                                 />
                             )}
                         </div>
-                    }
+                    </PageStateWrapper>
                 </div>
                 <div className={styles.buttonsSection}>
                     <Button onClick={() => onClose()}>
@@ -70,8 +75,8 @@ const ChangeAvatarDialog = ({onClose}: ChangeAvatarDialogProps) => {
                     </Button>
                     <LoadingButton
                         onClick={
-                        () => userAvatarMutation.mutate({avatarName: avatarsStrings[selectedIndex]})
-                    }
+                            () => userAvatarMutation.mutate({avatarName: avatarsStrings[selectedIndex]})
+                        }
                         loading={avatars.isPending}>
                         Подтвердить
                     </LoadingButton>

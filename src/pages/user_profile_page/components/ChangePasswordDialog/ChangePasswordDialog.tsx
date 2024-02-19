@@ -36,13 +36,17 @@ const ChangePasswordDialog = ({onClose}: ChangePasswordDialog) => {
         onError: (error: AxiosError) => {
             if ((error.response?.data as any).message === 'Wrong password') {
                 setOldPasswordError('Неверный пароль!')
+                return
             }
             if ((error.response?.data as any).message === 'Passwords should match') {
                 setRepeatPasswordError('Пароли должны совпадать!')
+                return
             }
             if ((error.response?.data as any).message === 'Weak password') {
                 setNewPasswordError('Слабый пароль! (используйте буквы и цифры)')
+                return
             }
+            setOldPasswordError('При смене пароля произошла ошибка!')
         },
         onSuccess: () => {
             updateUser()
