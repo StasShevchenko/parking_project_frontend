@@ -36,7 +36,7 @@ const QueueSection = () => {
                     errorMessage={"При загрузке данных что-то пошло не так!"}
                     onErrorAction="reload"
                 >
-                    {!queue.isPending && queue.data?.[0].length === 0 &&
+                    {!queue.isPending && (queue.data?.length === 0 || queue.data?.[0].length === 0) &&
                         <div className="empty-message">Пользователи не найдены :(</div>}
                     {!queue.isPending && queue.data?.map((queueCycle, index) =>
                         <div key={index}>
